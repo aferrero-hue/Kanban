@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Asap&display=swap");
+/*
+  De moment el CSS d'aquesta Part correspon a la part To-do App
+  És molt simple y copiada, amb el temps hem de cambiar-la
+*/
 * {
   padding: 0;
   margin: 0;
@@ -60,4 +64,14 @@ li {
   font-size: small;
   background-color: whitesmoke;
   padding: 20px;
+}
+/*
+El #dropZone es un exemple bàsic
+De moment l'utilitzo per realitzar probes.
+Aquest CSS modifica un DIV on permet que s'arrastrin elements.
+*/
+#drop_zone {
+  border: 5px solid blue;
+  width: 200px;
+  height: 100px;
 }

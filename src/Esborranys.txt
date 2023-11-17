@@ -1,3 +1,6 @@
+    //Esquelet bàsic principal del Index.html
+    //Com estic fent probes encara no ho he implementat
+
     <p>AM I THE ONLY ONEEEE</p>
     <button id="addElement" onclick="CreateTask()">I am a Beta Tester!!!</button>
     <div class="container text-center">
