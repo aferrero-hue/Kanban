@@ -65,13 +65,18 @@ li {
   background-color: whitesmoke;
   padding: 20px;
 }
-/*
-El #dropZone es un exemple bàsic
-De moment l'utilitzo per realitzar probes.
-Aquest CSS modifica un DIV on permet que s'arrastrin elements.
-*/
-#drop_zone {
-  border: 5px solid blue;
-  width: 200px;
-  height: 100px;
+/*------------------------------*/
+/*Exemple de drag & drop, disseny del DIV*/
+#div1 {
+  width: 350px;
+  height: 70px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+}
+#drag1 {
+  width: 350px;
+  height: 70px;
+  padding: 10px;
+  border: 1px solid #aaaaaa;
+  background-color: red;
 }
