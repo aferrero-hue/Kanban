@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drag & Drop API</title>
+
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+    <script src="drag.js" defer></script>
+    <script src="todo.js" defer></script>
+    <script src="localStorage.js" defer></script>
+  </head>
+  <body>
+    <div class="menu">
+      <img class="logo" src="campalans.png">
+      <p class="institut">Institut</p>
+      <p class="nom">Rafael Campalans</p>
+      <!-- Afegit per a les opcions -->
+      <div class="menu-options">
+        <button id="modify-task-btn">Modificar</button>
+        <button id="delete-task-btn">Eliminar</button>
+        <button id="add-task-btn">Afegir</button>
+      </div>
+    </div>
+
+    <div class="board">
+      <form id="todo-form">
+      </form>
+
+      <div class="lanes">
+        <div class="swim-lane" id="todo-lane">
+          <h3 class="heading">TODO</h3>
+
+          <p class="task" draggable="true">Get groceries</p>
+          <p class="task" draggable="true">Feed the dogs</p>
+          <p class="task" draggable="true">Mow the lawn</p>
+        </div>
+
+        <div class="swim-lane">
+          <h3 class="heading">Doing</h3>
+
+          <p class="task" draggable="true">Binge 80 hours of Game of Thrones</p>
+        </div>
+
+        <div class="swim-lane">
+          <h3 class="heading">Done</h3>
+
+          <p class="task" draggable="true">
+            Watch video of a man raising a grocery store lobster as a pet
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Afegit modal per modificar/eliminar tasques -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <label for="task-code">Codi:</label>
+        <input type="text" id="task-code" />
+        <br>
+        <br>
+        <label for="task-description">Descripció:</label>
+        <input type="text" id="task-description" />
+        <br>
+        <br>
+        <label for="task-creation-date">Data de Creació:</label>
+        <input type="date" id="task-creation-date" />
+        <br>
+        <br>
+        <label for="task-due-date">Data de Previsió de Finalització:</label>
+        <input type="date" id="task-due-date" />
+        <br>
+        <br>
+        <label for="task-responsible">Nom del Responsable:</label>
+        <input type="text" id="task-responsible" />
+        <br>
+        <br>
+        <label for="task-priority">Prioritat:</label>
+        <select id="task-priority">
+          <option value="verd">Verd</option>
+          <option value="groc">Groc</option>
+          <option value="vermell">Vermell</option>
+        </select>
+        <br>
+        <br>
+        <button id="save-task-btn">Desar</button>
+        <button id="delete-task-btn-modal">Eliminar</button>
+      </div>
+    </div>
+    <footer>2023 - Projecte 1 - Kanban - Institut Rafael Campalans</footer>
+  </body>
+</html>
