@@ -10,6 +10,7 @@ ERRORS
  - Al eliminar una tasca, es manté en el localStorage
 
 2. Botó Afegir
+ - Al afegir la tasca, només es mostra la descripció'1
  - Botó Eliminar no fa falta
  - No es pot tornar enrere.
  - No afegir una tasca buida
