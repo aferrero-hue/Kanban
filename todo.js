@@ -7,6 +7,7 @@ const addBtn = document.getElementById("add-task-btn");
 const modal = document.getElementById("modal");
 const closeModalBtn = document.querySelector(".close");
 const saveTaskBtn = document.getElementById("save-task-btn");
+const infoBtn = document.getElementById("info-task-btn")
 
 // Color original de la tasca seleccionada
 let selectedTaskColor = "";
@@ -101,6 +102,20 @@ deleteBtn.addEventListener("click", () => {
     selectedTask.remove();
     selectedTask = null;
     selectedTaskColor = "";
+  }
+});
+
+infoBtn.addEventListener("click", () => {
+  if (selectedTask) {
+    // Muestra la información de la tarea seleccionada en el modal de información
+    document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
+    document.getElementById("task-info-description").innerText = selectedTask.innerText || "";
+    document.getElementById("task-info-creation-date").innerText = selectedTask.dataset.creationDate || "";
+    document.getElementById("task-info-due-date").innerText = selectedTask.dataset.dueDate || "";
+    document.getElementById("task-info-responsible").innerText = selectedTask.dataset.responsible || "";
+    document.getElementById("task-info-priority").innerText = selectedTask.dataset.priority || "";
+    
+    info.style.display = "flex";
   }
 });
 

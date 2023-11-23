@@ -88,8 +88,21 @@
         <br>
         <br>
         <button id="save-task-btn">Desar</button>
-        <button id="delete-task-btn-modal">Eliminar</button>
       </div>
     </div>
+
+        <!-- Afegit modal per mostrar informació de tasques -->
+        <div id="info" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><strong>Codi:</strong> <span id="task-info-code"></span></p>
+            <p><strong>Descripció:</strong> <span id="task-info-description"></span></p>
+            <p><strong>Data de Creació:</strong> <span id="task-info-creation-date"></span></p>
+            <p><strong>Data de Previsió de Finalització:</strong> <span id="task-info-due-date"></span></p>
+            <p><strong>Nom del Responsable:</strong> <span id="task-info-responsible"></span></p>
+            <p><strong>Prioritat:</strong> <span id="task-info-priority"></span></p>
+          </div>
+        </div>
+
   </body>
 </html>
