@@ -13,6 +13,7 @@ ERRORS
  - Botó Eliminar no fa falta
  - No es pot tornar enrere.
  - No afegir una tasca buida
+ - Una tasca no pot tenir el mateix codi.
 
 3. Botó Modificar
  - No modifica, afegeix una tasca.
