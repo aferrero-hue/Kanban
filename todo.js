@@ -93,6 +93,11 @@ deleteBtn.addEventListener("click", () => {
   // Utilitza la variable selectedTask per obtenir la tasca seleccionada
   // Mostra una finestra/modal de confirmació abans de eliminar
   if (selectedTask) {
+    // Elimina la tarea seleccionada del local storage
+    const taskId = selectedTask.dataset.code;
+    deleteTaskFromLocalStorage(taskId);
+
+    // Elimina la tarea seleccionada del DOM
     selectedTask.remove();
     selectedTask = null;
     selectedTaskColor = "";
