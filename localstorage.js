@@ -15,3 +15,14 @@ function deleteTaskFromLocalStorage(taskId) {
   const updatedTasks = tasks.filter(task => task.code !== taskId); // Utiliza "code" en lugar de "id" si es la propiedad correcta
   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 }
+
+function updateTaskInLocalStorage(updatedTask) {
+  const tasks = getTasksFromLocalStorage();
+  const updatedTasks = tasks.map(task => {
+    if (task.code === updatedTask.code) {
+      return updatedTask;
+    }
+    return task;
+  });
+  localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+}
