@@ -7,8 +7,6 @@ const addBtn = document.getElementById("add-task-btn");
 const modal = document.getElementById("modal");
 const closeModalBtn = document.querySelector(".close");
 const saveTaskBtn = document.getElementById("save-task-btn");
-const infoBtn = document.getElementById("info-task-btn");
-const infoModal = document.getElementById("info");
 
 // Color original de la tarea seleccionada
 let selectedTaskColor = "";
@@ -18,6 +16,11 @@ let selectedTask = null;
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
+}
+
+// Funció per generar una ID unica.
+function generateid(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 // Evento al hacer clic en cualquier parte del documento
@@ -80,13 +83,19 @@ addBtn.addEventListener("click", () => {
 
   // Muestra el modal de agregar
   modal.style.display = "flex";
+  // Es crea una ID
+  generatedcode = generateid();
+
+  document.getElementById('task-code-result').innerHTML = generatedcode;
+  //console.log(generatedcode);
 });
 
 // Botón para modificar tarea
 modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
-    // Rellena el formulario con los datos de la tarea seleccionada
+    // Omple el formulari amb les dades de la tasca seleccionada
     document.getElementById("task-code").value = selectedTask.dataset.code || "";
+
     document.getElementById("task-description").value = selectedTask.innerText || "";
     document.getElementById("task-creation-date").value =
       selectedTask.dataset.creationDate || "";
@@ -126,6 +135,7 @@ infoBtn.addEventListener("click", () => {
 });
 
 saveTaskBtn.addEventListener("click", () => {
+  // Guarda les dades de la tasca i tanca el modal
   const code = document.getElementById("task-code").value;
   const description = document.getElementById("task-description").value;
   const creationDate = document.getElementById("task-creation-date").value;
@@ -133,40 +143,16 @@ saveTaskBtn.addEventListener("click", () => {
   const responsible = document.getElementById("task-responsible").value;
   const priority = document.getElementById("task-priority").value;
 
-  const updatedTask = {
-    code,
-    description,
-    creationDate,
-    dueDate,
-    responsible,
-    priority,
-  };
-
-  if (selectedTask) {
-    // Modifica la tarea existente con los nuevos datos
-    selectedTask.dataset.code = code;
-    selectedTask.dataset.creationDate = creationDate;
-    selectedTask.dataset.dueDate = dueDate;
-    selectedTask.dataset.responsible = responsible;
-    selectedTask.dataset.priority = priority;
-    selectedTask.innerText = description;
-
-    // Actualiza el color de la tarea basado en la prioridad
-    updateTaskColor(selectedTask, priority);
-
-    // Asume que tienes una función updateTaskInLocalStorage
-    updateTaskInLocalStorage(updatedTask);
-  } else {
-    // Crea una nueva tarea con los datos ingresados
-    const newTask = document.createElement("p");
-    newTask.classList.add("task");
-    newTask.setAttribute("draggable", "true");
-    newTask.dataset.code = code;
-    newTask.dataset.creationDate = creationDate;
-    newTask.dataset.dueDate = dueDate;
-    newTask.dataset.responsible = responsible;
-    newTask.dataset.priority = priority;
-    newTask.innerText = description;
+  // Crea una nova tasca amb les dades introduïdes
+  const newTask = document.createElement("p");
+  newTask.classList.add("task");
+  newTask.setAttribute("draggable", "true");
+  newTask.dataset.code = code;
+  newTask.dataset.creationDate = creationDate;
+  newTask.dataset.dueDate = dueDate;
+  newTask.dataset.responsible = responsible;
+  newTask.dataset.priority = priority;
+  newTask.innerText = description;
 
     newTask.addEventListener("dragstart", () => {
       newTask.classList.add("is-dragging");
@@ -184,7 +170,6 @@ saveTaskBtn.addEventListener("click", () => {
 
     // Asume que tienes una función saveTaskToLocalStorage
     saveTaskToLocalStorage(updatedTask);
-  }
 
   // Cierra el modal
   modal.style.display = "none";
