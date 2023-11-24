@@ -8,6 +8,9 @@ const modal = document.getElementById("modal");
 const closeModalBtn = document.querySelector(".close");
 const saveTaskBtn = document.getElementById("save-task-btn");
 
+//Variable que obté un nou codi
+var generatedcode = null;
+
 // Color original de la tasca seleccionada
 let selectedTaskColor = "";
 let selectedTask = null;
@@ -16,6 +19,11 @@ let selectedTask = null;
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
+}
+
+// Funció per generar una ID unica.
+function generateid(){
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 // Esdeveniment al fer clic en qualsevol part del document
@@ -70,12 +78,19 @@ addBtn.addEventListener("click", () => {
   // Implementa la lògica per afegir una nova tasca
   // Mostra una finestra/modal per introduir les dades de la nova tasca
   modal.style.display = "flex";
+  // Es crea una ID
+  generatedcode = generateid();
+
+  document.getElementById('task-code-result').innerHTML = generatedcode;
+  //console.log(generatedcode);
 });
 
 modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
     // Omple el formulari amb les dades de la tasca seleccionada
+    //AAA Modificar el tema de la ID, task-code
     document.getElementById("task-code").value = selectedTask.dataset.code || "";
+
     document.getElementById("task-description").value = selectedTask.innerText || "";
     document.getElementById("task-creation-date").value =
       selectedTask.dataset.creationDate || "";
@@ -106,7 +121,8 @@ deleteBtn.addEventListener("click", () => {
 
 saveTaskBtn.addEventListener("click", () => {
   // Guarda les dades de la tasca i tanca el modal
-  const code = document.getElementById("task-code").value;
+  const code = generatedcode;
+  console.log(code);
   const description = document.getElementById("task-description").value;
   const creationDate = document.getElementById("task-creation-date").value;
   const dueDate = document.getElementById("task-due-date").value;
@@ -117,6 +133,8 @@ saveTaskBtn.addEventListener("click", () => {
   const newTask = document.createElement("p");
   newTask.classList.add("task");
   newTask.setAttribute("draggable", "true");
+  //NOTA: Com he cambiat el format HTML del Codi, aixó en teoria no funciona del tot.
+  //Parlo del codi***
   newTask.dataset.code = code;
   newTask.dataset.creationDate = creationDate;
   newTask.dataset.dueDate = dueDate;
