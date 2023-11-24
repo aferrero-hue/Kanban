@@ -8,14 +8,11 @@ const modal = document.getElementById("modal");
 const closeModalBtn = document.querySelector(".close");
 const saveTaskBtn = document.getElementById("save-task-btn");
 
-//Variable que obté un nou codi
-var generatedcode = null;
-
-// Color original de la tasca seleccionada
+// Color original de la tarea seleccionada
 let selectedTaskColor = "";
 let selectedTask = null;
 
-// Funció per actualitzar el color de la tasca basat en la prioritat
+// Función para actualizar el color de la tarea basado en la prioridad
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
@@ -26,22 +23,22 @@ function generateid(){
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-// Esdeveniment al fer clic en qualsevol part del document
+// Evento al hacer clic en cualquier parte del documento
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("task")) {
-    // Restaura el color original de la tasca prèviament seleccionada
+    // Restaura el color original de la tarea previamente seleccionada
     if (selectedTaskColor !== "" && selectedTask !== null) {
       selectedTask.style.backgroundColor = selectedTaskColor;
     }
 
-    // Actualitza la tasca seleccionada i el seu color original
+    // Actualiza la tarea seleccionada y su color original
     selectedTask = e.target;
     selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
 
-    // Estableix el color de la tasca com a blau
+    // Establece el color de la tarea como azul
     selectedTask.style.backgroundColor = "blue";
   } else {
-    // Si es fa clic fora d'una tasca, desselecciona la tasca
+    // Si se hace clic fuera de una tarea, desselecciona la tarea
     if (selectedTaskColor !== "" && selectedTask !== null) {
       selectedTask.style.backgroundColor = selectedTaskColor;
       selectedTask = null;
@@ -74,9 +71,17 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 });
 
+// Botón para agregar nueva tarea
 addBtn.addEventListener("click", () => {
-  // Implementa la lògica per afegir una nova tasca
-  // Mostra una finestra/modal per introduir les dades de la nova tasca
+  // Limpia el formulario antes de agregar una nueva tarea
+  document.getElementById("task-code").value = "";
+  document.getElementById("task-description").value = "";
+  document.getElementById("task-creation-date").value = "";
+  document.getElementById("task-due-date").value = "";
+  document.getElementById("task-responsible").value = "";
+  document.getElementById("task-priority").value = "verd";
+
+  // Muestra el modal de agregar
   modal.style.display = "flex";
   // Es crea una ID
   generatedcode = generateid();
@@ -85,10 +90,10 @@ addBtn.addEventListener("click", () => {
   //console.log(generatedcode);
 });
 
+// Botón para modificar tarea
 modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
     // Omple el formulari amb les dades de la tasca seleccionada
-    //AAA Modificar el tema de la ID, task-code
     document.getElementById("task-code").value = selectedTask.dataset.code || "";
 
     document.getElementById("task-description").value = selectedTask.innerText || "";
@@ -99,30 +104,39 @@ modifyBtn.addEventListener("click", () => {
       selectedTask.dataset.responsible || "";
     document.getElementById("task-priority").value = selectedTask.dataset.priority || "verd";
 
+    // Muestra el modal de modificación
     modal.style.display = "flex";
   }
 });
 
 deleteBtn.addEventListener("click", () => {
-  // Implementa la lògica per eliminar la tasca seleccionada
-  // Utilitza la variable selectedTask per obtenir la tasca seleccionada
-  // Mostra una finestra/modal de confirmació abans de eliminar
   if (selectedTask) {
-    // Elimina la tarea seleccionada del local storage
     const taskId = selectedTask.dataset.code;
+    // Asumiendo que tienes una función deleteTaskFromLocalStorage
     deleteTaskFromLocalStorage(taskId);
 
-    // Elimina la tarea seleccionada del DOM
     selectedTask.remove();
     selectedTask = null;
     selectedTaskColor = "";
   }
 });
 
+infoBtn.addEventListener("click", () => {
+  if (selectedTask) {
+    document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
+    document.getElementById("task-info-description").innerText = selectedTask.innerText || "";
+    document.getElementById("task-info-creation-date").innerText = selectedTask.dataset.creationDate || "";
+    document.getElementById("task-info-due-date").innerText = selectedTask.dataset.dueDate || "";
+    document.getElementById("task-info-responsible").innerText = selectedTask.dataset.responsible || "";
+    document.getElementById("task-info-priority").innerText = selectedTask.dataset.priority || "";
+
+    infoModal.style.display = "flex";
+  }
+});
+
 saveTaskBtn.addEventListener("click", () => {
   // Guarda les dades de la tasca i tanca el modal
-  const code = generatedcode;
-  console.log(code);
+  const code = document.getElementById("task-code").value;
   const description = document.getElementById("task-description").value;
   const creationDate = document.getElementById("task-creation-date").value;
   const dueDate = document.getElementById("task-due-date").value;
@@ -133,8 +147,6 @@ saveTaskBtn.addEventListener("click", () => {
   const newTask = document.createElement("p");
   newTask.classList.add("task");
   newTask.setAttribute("draggable", "true");
-  //NOTA: Com he cambiat el format HTML del Codi, aixó en teoria no funciona del tot.
-  //Parlo del codi***
   newTask.dataset.code = code;
   newTask.dataset.creationDate = creationDate;
   newTask.dataset.dueDate = dueDate;
@@ -142,36 +154,26 @@ saveTaskBtn.addEventListener("click", () => {
   newTask.dataset.priority = priority;
   newTask.innerText = description;
 
-  newTask.addEventListener("dragstart", () => {
-    newTask.classList.add("is-dragging");
-  });
+    newTask.addEventListener("dragstart", () => {
+      newTask.classList.add("is-dragging");
+    });
 
-  newTask.addEventListener("dragend", () => {
-    newTask.classList.remove("is-dragging");
-  });
+    newTask.addEventListener("dragend", () => {
+      newTask.classList.remove("is-dragging");
+    });
 
-  // Afegeix la nova tasca a la "TODO lane"
-  todoLane.appendChild(newTask);
+    // Añade la nueva tarea a la "TODO lane"
+    todoLane.appendChild(newTask);
 
-  // Tanca el modal
+    // Actualiza el color de la tarea basado en la prioridad
+    updateTaskColor(newTask, priority);
+
+    // Asume que tienes una función saveTaskToLocalStorage
+    saveTaskToLocalStorage(updatedTask);
+
+  // Cierra el modal
   modal.style.display = "none";
-
-  // Update task color based on priority
-  updateTaskColor(newTask, priority);
-
-  // Save task to localStorage
-  saveTaskToLocalStorage({
-    code,
-    description,
-    creationDate,
-    dueDate,
-    responsible,
-    priority,
-  });
 });
-
-// Resta del codi (funcions loadTasks, getTasksFromLocalStorage, etc.)
-
 
 // Function to load tasks from localStorage
 function loadTasks() {
@@ -206,6 +208,23 @@ function loadTasks() {
     todoLane.appendChild(newTask);
   });
 }
+
+// Evento de clic para cerrar el modal de agregar/modificar
+closeModalBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// Evento de clic fuera del contenido del modal para cerrar el modal
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Evento de clic para cerrar el modal de información
+document.querySelector("#info .close").addEventListener("click", () => {
+  infoModal.style.display = "none";
+});
 
 // Load tasks when the page is loaded
 window.addEventListener("load", loadTasks);

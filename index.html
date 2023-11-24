@@ -39,13 +39,13 @@
           <p class="task" draggable="true">Mow the lawn</p>
         </div>
 
-        <div class="swim-lane">
+        <div class="swim-lane" id="doing-lane">
           <h3 class="heading">Doing</h3>
 
           <p class="task" draggable="true">Binge 80 hours of Game of Thrones</p>
         </div>
 
-        <div class="swim-lane">
+        <div class="swim-lane" id="done-lane">
           <h3 class="heading">Done</h3>
 
           <p class="task" draggable="true">
@@ -89,8 +89,21 @@
         <br>
         <br>
         <button id="save-task-btn">Desar</button>
-        <button id="delete-task-btn-modal">Eliminar</button>
       </div>
     </div>
+
+        <!-- Afegit modal per mostrar informació de tasques -->
+        <div id="info" class="modal">
+          <div class="modal-content">
+            <span class="close">&times;</span>
+            <p><strong>Codi:</strong> <span id="task-info-code"></span></p>
+            <p><strong>Descripció:</strong> <span id="task-info-description"></span></p>
+            <p><strong>Data de Creació:</strong> <span id="task-info-creation-date"></span></p>
+            <p><strong>Data de Previsió de Finalització:</strong> <span id="task-info-due-date"></span></p>
+            <p><strong>Nom del Responsable:</strong> <span id="task-info-responsible"></span></p>
+            <p><strong>Prioritat:</strong> <span id="task-info-priority"></span></p>
+          </div>
+        </div>
+
   </body>
 </html>
