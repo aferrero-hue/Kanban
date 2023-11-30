@@ -20,6 +20,11 @@ function updateTaskColor(task, priority) {
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
 }
 
+// Funció per generar una ID unica.
+function generateid(){
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
 // Evento al hacer clic en cualquier parte del documento
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("task")) {
