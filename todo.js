@@ -20,11 +20,6 @@ function updateTaskColor(task, priority) {
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
 }
 
-// Funció per generar una ID unica.
-function generateid(){
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
-
 // Evento al hacer clic en cualquier parte del documento
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("task")) {
@@ -73,6 +68,8 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 });
 
+// ... (Código anterior)
+
 // Botón para agregar nueva tarea
 addBtn.addEventListener("click", () => {
   // Limpia el formulario antes de agregar una nueva tarea
@@ -90,9 +87,8 @@ addBtn.addEventListener("click", () => {
 // Botón para modificar tarea
 modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
-    // Omple el formulari amb les dades de la tasca seleccionada
+    // Rellena el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").value = selectedTask.dataset.code || "";
-
     document.getElementById("task-description").value = selectedTask.innerText || "";
     document.getElementById("task-creation-date").value =
       selectedTask.dataset.creationDate || "";
