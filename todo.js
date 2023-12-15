@@ -14,10 +14,28 @@ const infoModal = document.getElementById("info");
 let selectedTaskColor = "";
 let selectedTask = null;
 
+// Data actual
+let currentdate = "";
+
+
 // Función para actualizar el color de la tarea basado en la prioridad
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
+}
+
+//Funció per generar una Data actual en el moment
+function createstartdate(){
+  currentdate = new Date();
+  console.log(currentdate);
+  /*
+  //FALTA ACABAR!!! 30/11/2023
+  let dateObj = new Date();
+  let month = dateObj.getUTCMonth() + 1; //months from 1-12
+  let day = dateObj.getUTCDate();
+  let year = dateObj.getUTCFullYear();
+  newdate = year + "/" + month + "/" + day;
+  */
 }
 
 // Funció per generar una ID unica.
@@ -139,6 +157,9 @@ saveTaskBtn.addEventListener("click", () => {
   const dueDate = document.getElementById("task-due-date").value;
   const responsible = document.getElementById("task-responsible").value;
   const priority = document.getElementById("task-priority").value;
+
+  //TEST
+  createstartdate();
 
   //Verificació a l'hora de desar elements
   //No he ficat NULL ni prioritat perqué en teoria no es necesita.
