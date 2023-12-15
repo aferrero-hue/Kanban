@@ -1,253 +1,270 @@
-// Clase Task
-class Task {
-  constructor(description, priority) {
-    this.description = description;
-    this.priority = priority;
-  }
+const form = document.getElementById("todo-form");
+const input = document.getElementById("todo-input");
+const todoLane = document.getElementById("todo-lane");
+const modifyBtn = document.getElementById("modify-task-btn");
+const deleteBtn = document.getElementById("delete-task-btn");
+const addBtn = document.getElementById("add-task-btn");
+const modal = document.getElementById("modal");
+const closeModalBtn = document.querySelector(".close");
+const saveTaskBtn = document.getElementById("save-task-btn");
+const infoBtn = document.getElementById("info-task-btn");
+const infoModal = document.getElementById("info");
 
-  // Método para crear el elemento de tarea en el DOM
-  createDOMElement() {
-    const taskElement = document.createElement("p");
-    taskElement.classList.add("task");
-    taskElement.setAttribute("draggable", "true");
-    taskElement.innerText = this.description;
+// Color original de la tarea seleccionada
+let selectedTaskColor = "";
+let selectedTask = null;
 
-    // Agregar datos attributes
-    taskElement.dataset.description = this.description;
-    taskElement.dataset.priority = this.priority;
-
-    // Agregar eventos de arrastrar
-    taskElement.addEventListener("dragstart", () => {
-      taskElement.classList.add("is-dragging");
-    });
-
-    taskElement.addEventListener("dragend", () => {
-      taskElement.classList.remove("is-dragging");
-    });
-
-    // Actualizar color basado en prioridad
-    updateTaskColor(taskElement, this.priority);
-
-    return taskElement;
-  }
+// Función para actualizar el color de la tarea basado en la prioridad
+function updateTaskColor(task, priority) {
+  task.style.backgroundColor =
+    priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
 }
 
-// Clase TodoApp
-class TodoApp {
-  constructor() {
-    this.form = document.getElementById("todo-form");
-    this.input = document.getElementById("todo-input");
-    this.todoLane = document.getElementById("todo-lane");
-    this.modifyBtn = document.getElementById("modify-task-btn");
-    this.deleteBtn = document.getElementById("delete-task-btn");
-    this.addBtn = document.getElementById("add-task-btn");
-    this.modal = document.getElementById("modal");
-    this.closeModalBtn = document.querySelector(".close");
-    this.saveTaskBtn = document.getElementById("save-task-btn");
-    this.infoBtn = document.getElementById("info-task-btn");
-    this.infoModal = document.getElementById("info");
-
-    // Color original de la tarea seleccionada
-    this.selectedTaskColor = "";
-    this.selectedTask = null;
-
-    // Cargar tareas al iniciar la aplicación
-    window.addEventListener("load", () => this.loadTasks());
-
-    // Evento de submit del formulario
-    this.form.addEventListener("submit", (e) => this.handleFormSubmit(e));
-
-    // Evento al hacer clic en cualquier parte del documento
-    document.addEventListener("click", (e) => this.handleDocumentClick(e));
-
-    // Evento al hacer clic en cualquier parte del documento
-    document.addEventListener("mouseover", (e) => this.handleMouseOver(e));
-
-    // Evento al hacer clic en cualquier parte del documento
-    document.addEventListener("mouseout", (e) => this.handleMouseOut(e));
-
-    // Eventos de botones
-    this.addBtn.addEventListener("click", () => this.handleAddTaskClick());
-    this.modifyBtn.addEventListener("click", () => this.handleModifyTaskClick());
-    this.deleteBtn.addEventListener("click", () => this.handleDeleteTaskClick());
-    this.infoBtn.addEventListener("click", () => this.handleInfoTaskClick());
-
-    // Evento de clic para cerrar el modal de agregar/modificar
-    this.closeModalBtn.addEventListener("click", () => this.closeModal());
-
-    // Evento de clic fuera del contenido del modal para cerrar el modal
-    window.addEventListener("click", (e) => this.handleWindowClick(e));
-
-    // Evento de clic para cerrar el modal de información
-    document.querySelector("#info .close").addEventListener("click", () => this.closeInfoModal());
-  }
-
-  handleFormSubmit(event) {
-    event.preventDefault();
-    const value = this.input.value;
-
-    if (!value) return;
-
-    const newTask = new Task(value, "verd");
-    const taskElement = newTask.createDOMElement();
-
-    taskElement.addEventListener("click", () => this.handleTaskClick(taskElement));
-
-    this.todoLane.appendChild(taskElement);
-    this.input.value = "";
-  }
-
-  handleTaskClick(taskElement) {
-    if (this.selectedTask) {
-      // Restaura el color original de la tarea previamente seleccionada
-      this.selectedTask.style.backgroundColor = this.selectedTaskColor;
+// Evento al hacer clic en cualquier parte del documento
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("task")) {
+    // Restaura el color original de la tarea previamente seleccionada
+    if (selectedTaskColor !== "" && selectedTask !== null) {
+      selectedTask.style.backgroundColor = selectedTaskColor;
     }
 
     // Actualiza la tarea seleccionada y su color original
-    this.selectedTask = taskElement;
-    this.selectedTaskColor = getComputedStyle(this.selectedTask).backgroundColor;
+    selectedTask = e.target;
+    selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
 
     // Establece el color de la tarea como azul
-    this.selectedTask.style.backgroundColor = "blue";
-  }
-
-  handleDocumentClick(event) {
-    if (event.target.classList.contains("task")) {
-      this.handleTaskClick(event.target);
-    } else {
-      this.deselectTask();
+    selectedTask.style.backgroundColor = "blue";
+  } else {
+    // Si se hace clic fuera de una tarea, desselecciona la tarea
+    if (selectedTaskColor !== "" && selectedTask !== null) {
+      selectedTask.style.backgroundColor = selectedTaskColor;
+      selectedTask = null;
+      selectedTaskColor = "";
     }
   }
+});
 
-  handleMouseOver(event) {
-    if (event.target.classList.contains("task")) {
-      this.handleTaskMouseOver(event.target);
+// Evento al hacer clic en cualquier parte del documento
+document.addEventListener("mouseover", (e) => {
+  if (e.target.classList.contains("task")) {
+    // Restaura el color original de la tarea previamente seleccionada
+    if (selectedTaskColor !== "" && selectedTask !== null && selectedTask !== e.target) {
+      selectedTask.style.backgroundColor = selectedTaskColor;
     }
+
+    // Actualiza la tarea seleccionada y su color original
+    selectedTask = e.target;
+    selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
+
+    // Establece el color de la tarea como gris
+    selectedTask.style.backgroundColor = "grey";
   }
+});
 
-  handleMouseOut(event) {
-    if (event.target.classList.contains("task") && this.selectedTask !== event.target) {
-      event.target.style.backgroundColor = this.selectedTaskColor;
-    }
+document.addEventListener("mouseout", (e) => {
+  if (e.target.classList.contains("task") && selectedTask !== e.target) {
+    e.target.style.backgroundColor = selectedTaskColor;
   }
+});
 
-  deselectTask() {
-    if (this.selectedTaskColor !== "" && this.selectedTask !== null) {
-      this.selectedTask.style.backgroundColor = this.selectedTaskColor;
-      this.selectedTask = null;
-      this.selectedTaskColor = "";
-    }
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const value = input.value;
+
+  if (!value) return;
+
+  const newTask = document.createElement("p");
+  newTask.classList.add("task");
+  newTask.setAttribute("draggable", "true");
+  newTask.innerText = value;
+
+  newTask.addEventListener("dragstart", () => {
+    newTask.classList.add("is-dragging");
+  });
+
+  newTask.addEventListener("dragend", () => {
+    newTask.classList.remove("is-dragging");
+  });
+
+  todoLane.appendChild(newTask);
+
+  input.value = "";
+});
+
+// ... (Código anterior)
+
+// Botón para agregar nueva tarea
+addBtn.addEventListener("click", () => {
+  // Limpia el formulario antes de agregar una nueva tarea
+  document.getElementById("task-code").value = "";
+  document.getElementById("task-description").value = "";
+  document.getElementById("task-creation-date").value = "";
+  document.getElementById("task-due-date").value = "";
+  document.getElementById("task-responsible").value = "";
+  document.getElementById("task-priority").value = "verd";
+
+  // Muestra el modal de agregar
+  modal.style.display = "flex";
+});
+
+// Botón para modificar tarea
+modifyBtn.addEventListener("click", () => {
+  if (selectedTask) {
+    // Rellena el formulario con los datos de la tarea seleccionada
+    document.getElementById("task-code").value = selectedTask.dataset.code || "";
+    document.getElementById("task-description").value = selectedTask.innerText || "";
+    document.getElementById("task-creation-date").value =
+      selectedTask.dataset.creationDate || "";
+    document.getElementById("task-due-date").value = selectedTask.dataset.dueDate || "";
+    document.getElementById("task-responsible").value =
+      selectedTask.dataset.responsible || "";
+    document.getElementById("task-priority").value = selectedTask.dataset.priority || "verd";
+
+    // Muestra el modal de modificación
+    modal.style.display = "flex";
   }
+});
 
-  handleAddTaskClick() {
-    // Limpia el formulario antes de agregar una nueva tarea
-    document.getElementById("task-code").value = "";
-    document.getElementById("task-description").value = "";
-    document.getElementById("task-creation-date").value = "";
-    document.getElementById("task-due-date").value = "";
-    document.getElementById("task-responsible").value = "";
-    document.getElementById("task-priority").value = "verd";
+deleteBtn.addEventListener("click", () => {
+  if (selectedTask) {
+    const taskId = selectedTask.dataset.code;
+    // Asumiendo que tienes una función deleteTaskFromLocalStorage
+    deleteTaskFromLocalStorage(taskId);
 
-    // Muestra el modal de agregar
-    this.modal.style.display = "flex";
+    selectedTask.remove();
+    selectedTask = null;
+    selectedTaskColor = "";
   }
+});
 
-  handleModifyTaskClick() {
-    if (this.selectedTask) {
-      // Rellena el formulario con los datos de la tarea seleccionada
-      document.getElementById("task-code").value = this.selectedTask.dataset.code || "";
-      document.getElementById("task-description").value = this.selectedTask.innerText || "";
-      document.getElementById("task-creation-date").value =
-        this.selectedTask.dataset.creationDate || "";
-      document.getElementById("task-due-date").value = this.selectedTask.dataset.dueDate || "";
-      document.getElementById("task-responsible").value =
-        this.selectedTask.dataset.responsible || "";
-      document.getElementById("task-priority").value = this.selectedTask.dataset.priority || "verd";
+infoBtn.addEventListener("click", () => {
+  if (selectedTask) {
+    document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
+    document.getElementById("task-info-description").innerText = selectedTask.innerText || "";
+    document.getElementById("task-info-creation-date").innerText = selectedTask.dataset.creationDate || "";
+    document.getElementById("task-info-due-date").innerText = selectedTask.dataset.dueDate || "";
+    document.getElementById("task-info-responsible").innerText = selectedTask.dataset.responsible || "";
+    document.getElementById("task-info-priority").innerText = selectedTask.dataset.priority || "";
 
-      // Muestra el modal de modificación
-      this.modal.style.display = "flex";
-    }
+    infoModal.style.display = "flex";
   }
+});
 
-  handleDeleteTaskClick() {
-    if (this.selectedTask) {
-      const taskId = this.selectedTask.dataset.code;
-      // Asumiendo que tienes una función deleteTaskFromLocalStorage
-      this.deleteTaskFromLocalStorage(taskId);
+saveTaskBtn.addEventListener("click", () => {
+  const code = document.getElementById("task-code").value;
+  const description = document.getElementById("task-description").value;
+  const creationDate = document.getElementById("task-creation-date").value;
+  const dueDate = document.getElementById("task-due-date").value;
+  const responsible = document.getElementById("task-responsible").value;
+  const priority = document.getElementById("task-priority").value;
 
-      this.selectedTask.remove();
-      this.selectedTask = null;
-      this.selectedTaskColor = "";
-    }
-  }
+  const updatedTask = {
+    code,
+    description,
+    creationDate,
+    dueDate,
+    responsible,
+    priority,
+  };
 
-  handleInfoTaskClick() {
-    if (this.selectedTask) {
-      document.getElementById("task-info-code").innerText = this.selectedTask.dataset.code || "";
-      document.getElementById("task-info-description").innerText = this.selectedTask.innerText || "";
-      document.getElementById("task-info-creation-date").innerText = this.selectedTask.dataset.creationDate || "";
-      document.getElementById("task-info-due-date").innerText = this.selectedTask.dataset.dueDate || "";
-      document.getElementById("task-info-responsible").innerText = this.selectedTask.dataset.responsible || "";
-      document.getElementById("task-info-priority").innerText = this.selectedTask.dataset.priority || "";
+  if (selectedTask) {
+    // Modifica la tarea existente con los nuevos datos
+    selectedTask.dataset.code = code;
+    selectedTask.dataset.creationDate = creationDate;
+    selectedTask.dataset.dueDate = dueDate;
+    selectedTask.dataset.responsible = responsible;
+    selectedTask.dataset.priority = priority;
+    selectedTask.innerText = description;
 
-      this.infoModal.style.display = "flex";
-    }
-  }
+    // Actualiza el color de la tarea basado en la prioridad
+    updateTaskColor(selectedTask, priority);
 
-  handleWindowClick(event) {
-    if (event.target === this.modal) {
-      this.closeModal();
-    }
-  }
+    // Asume que tienes una función updateTaskInLocalStorage
+    updateTaskInLocalStorage(updatedTask);
+  } else {
+    // Crea una nueva tarea con los datos ingresados
+    const newTask = document.createElement("p");
+    newTask.classList.add("task");
+    newTask.setAttribute("draggable", "true");
+    newTask.dataset.code = code;
+    newTask.dataset.creationDate = creationDate;
+    newTask.dataset.dueDate = dueDate;
+    newTask.dataset.responsible = responsible;
+    newTask.dataset.priority = priority;
+    newTask.innerText = description;
 
-  closeModal() {
-    this.modal.style.display = "none";
-  }
-
-  closeInfoModal() {
-    this.infoModal.style.display = "none";
-  }
-
-  // Método para cargar tareas desde el almacenamiento local
-  loadTasks() {
-    const tasks = this.getTasksFromLocalStorage();
-    tasks.forEach((task) => {
-      const { description, priority } = task;
-
-      // Crear un nuevo elemento de tarea
-      const newTask = new Task(description, priority);
-      const taskElement = newTask.createDOMElement();
-
-      // Establecer atributos de datos
-      Object.keys(task).forEach((key) => {
-        taskElement.dataset[key] = task[key];
-      });
-
-      // Añadir eventos de arrastrar
-      taskElement.addEventListener("dragstart", () => {
-        taskElement.classList.add("is-dragging");
-      });
-
-      taskElement.addEventListener("dragend", () => {
-        taskElement.classList.remove("is-dragging");
-      });
-
-      // Agregar la tarea a la "TODO lane"
-      this.todoLane.appendChild(taskElement);
+    newTask.addEventListener("dragstart", () => {
+      newTask.classList.add("is-dragging");
     });
+
+    newTask.addEventListener("dragend", () => {
+      newTask.classList.remove("is-dragging");
+    });
+
+    // Añade la nueva tarea a la "TODO lane"
+    todoLane.appendChild(newTask);
+
+    // Actualiza el color de la tarea basado en la prioridad
+    updateTaskColor(newTask, priority);
+
+    // Asume que tienes una función saveTaskToLocalStorage
+    saveTaskToLocalStorage(updatedTask);
   }
 
-  // Otras funciones que pueden requerir implementación
-  deleteTaskFromLocalStorage(taskId) {
-    // Implementa la lógica para eliminar la tarea del almacenamiento local
-  }
+  // Cierra el modal
+  modal.style.display = "none";
+});
 
-  getTasksFromLocalStorage() {
-    // Implementa la lógica para obtener las tareas desde el almacenamiento local
-    // Devuelve un array de objetos de tarea
-    return [];
-  }
+// Function to load tasks from localStorage
+function loadTasks() {
+  const tasks = getTasksFromLocalStorage();
+  tasks.forEach((task) => {
+    const { description, priority } = task;
+
+    // Create a new task element
+    const newTask = document.createElement("p");
+    newTask.classList.add("task");
+    newTask.setAttribute("draggable", "true");
+    newTask.innerText = description;
+
+    // Set data attributes
+    Object.keys(task).forEach((key) => {
+      newTask.dataset[key] = task[key];
+    });
+
+    // Update task color based on priority
+    updateTaskColor(newTask, priority);
+
+    // Add drag event listeners
+    newTask.addEventListener("dragstart", () => {
+      newTask.classList.add("is-dragging");
+    });
+
+    newTask.addEventListener("dragend", () => {
+      newTask.classList.remove("is-dragging");
+    });
+
+    // Append the task to the TODO lane
+    todoLane.appendChild(newTask);
+  });
 }
 
-// Instanciar la aplicación
-const todoApp = new TodoApp();
+// Evento de clic para cerrar el modal de agregar/modificar
+closeModalBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
+// Evento de clic fuera del contenido del modal para cerrar el modal
+window.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Evento de clic para cerrar el modal de información
+document.querySelector("#info .close").addEventListener("click", () => {
+  infoModal.style.display = "none";
+});
+
+// Load tasks when the page is loaded
+window.addEventListener("load", loadTasks);
