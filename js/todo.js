@@ -14,33 +14,10 @@ const infoModal = document.getElementById("info");
 let selectedTaskColor = "";
 let selectedTask = null;
 
-// Data actual
-let currentdate = "";
-
-
 // Función para actualizar el color de la tarea basado en la prioridad
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
-}
-
-//Funció per generar una Data actual en el moment
-function createstartdate(){
-  currentdate = new Date();
-  console.log(currentdate);
-  /*
-  //FALTA ACABAR!!! 30/11/2023
-  let dateObj = new Date();
-  let month = dateObj.getUTCMonth() + 1; //months from 1-12
-  let day = dateObj.getUTCDate();
-  let year = dateObj.getUTCFullYear();
-  newdate = year + "/" + month + "/" + day;
-  */
-}
-
-// Funció per generar una ID unica.
-function generateid(){
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 // Evento al hacer clic en cualquier parte del documento
@@ -64,6 +41,29 @@ document.addEventListener("click", (e) => {
       selectedTask = null;
       selectedTaskColor = "";
     }
+  }
+});
+
+// Evento al hacer clic en cualquier parte del documento
+document.addEventListener("mouseover", (e) => {
+  if (e.target.classList.contains("task")) {
+    // Restaura el color original de la tarea previamente seleccionada
+    if (selectedTaskColor !== "" && selectedTask !== null && selectedTask !== e.target) {
+      selectedTask.style.backgroundColor = selectedTaskColor;
+    }
+
+    // Actualiza la tarea seleccionada y su color original
+    selectedTask = e.target;
+    selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
+
+    // Establece el color de la tarea como gris
+    selectedTask.style.backgroundColor = "grey";
+  }
+});
+
+document.addEventListener("mouseout", (e) => {
+  if (e.target.classList.contains("task") && selectedTask !== e.target) {
+    e.target.style.backgroundColor = selectedTaskColor;
   }
 });
 
@@ -158,70 +158,61 @@ saveTaskBtn.addEventListener("click", () => {
   const responsible = document.getElementById("task-responsible").value;
   const priority = document.getElementById("task-priority").value;
 
-  //TEST
-  createstartdate();
+  const updatedTask = {
+    code,
+    description,
+    creationDate,
+    dueDate,
+    responsible,
+    priority,
+  };
 
-  //Verificació a l'hora de desar elements
-  //No he ficat NULL ni prioritat perqué en teoria no es necesita.
-  //En el cas de prioritat sempre comença amb un per defecte.
-  if(code != "" && description != "" && creationDate != "" && dueDate != "" && responsible != ""){
-    const updatedTask = {
-      code,
-      description,
-      creationDate,
-      dueDate,
-      responsible,
-      priority,
-    };
-  
-    if (selectedTask) {
-      // Modifica la tarea existente con los nuevos datos
-      selectedTask.dataset.code = code;
-      selectedTask.dataset.creationDate = creationDate;
-      selectedTask.dataset.dueDate = dueDate;
-      selectedTask.dataset.responsible = responsible;
-      selectedTask.dataset.priority = priority;
-      selectedTask.innerText = description;
-  
-      // Actualiza el color de la tarea basado en la prioridad
-      updateTaskColor(selectedTask, priority);
-  
-      // Asume que tienes una función updateTaskInLocalStorage
-      updateTaskInLocalStorage(updatedTask);
-    } else {
-      // Crea una nueva tarea con los datos ingresados
-      const newTask = document.createElement("p");
-      newTask.classList.add("task");
-      newTask.setAttribute("draggable", "true");
-      newTask.dataset.code = code;
-      newTask.dataset.creationDate = creationDate;
-      newTask.dataset.dueDate = dueDate;
-      newTask.dataset.responsible = responsible;
-      newTask.dataset.priority = priority;
-      newTask.innerText = description;
-  
-      newTask.addEventListener("dragstart", () => {
-        newTask.classList.add("is-dragging");
-      });
-  
-      newTask.addEventListener("dragend", () => {
-        newTask.classList.remove("is-dragging");
-      });
-  
-      // Añade la nueva tarea a la "TODO lane"
-      todoLane.appendChild(newTask);
-  
-      // Actualiza el color de la tarea basado en la prioridad
-      updateTaskColor(newTask, priority);
-  
-      // Asume que tienes una función saveTaskToLocalStorage
-      saveTaskToLocalStorage(updatedTask);
-    }
-  
-    // Cierra el modal
-    modal.style.display = "none";
+  if (selectedTask) {
+    // Modifica la tarea existente con los nuevos datos
+    selectedTask.dataset.code = code;
+    selectedTask.dataset.creationDate = creationDate;
+    selectedTask.dataset.dueDate = dueDate;
+    selectedTask.dataset.responsible = responsible;
+    selectedTask.dataset.priority = priority;
+    selectedTask.innerText = description;
+
+    // Actualiza el color de la tarea basado en la prioridad
+    updateTaskColor(selectedTask, priority);
+
+    // Asume que tienes una función updateTaskInLocalStorage
+    updateTaskInLocalStorage(updatedTask);
+  } else {
+    // Crea una nueva tarea con los datos ingresados
+    const newTask = document.createElement("p");
+    newTask.classList.add("task");
+    newTask.setAttribute("draggable", "true");
+    newTask.dataset.code = code;
+    newTask.dataset.creationDate = creationDate;
+    newTask.dataset.dueDate = dueDate;
+    newTask.dataset.responsible = responsible;
+    newTask.dataset.priority = priority;
+    newTask.innerText = description;
+
+    newTask.addEventListener("dragstart", () => {
+      newTask.classList.add("is-dragging");
+    });
+
+    newTask.addEventListener("dragend", () => {
+      newTask.classList.remove("is-dragging");
+    });
+
+    // Añade la nueva tarea a la "TODO lane"
+    todoLane.appendChild(newTask);
+
+    // Actualiza el color de la tarea basado en la prioridad
+    updateTaskColor(newTask, priority);
+
+    // Asume que tienes una función saveTaskToLocalStorage
+    saveTaskToLocalStorage(updatedTask);
   }
 
+  // Cierra el modal
+  modal.style.display = "none";
 });
 
 // Function to load tasks from localStorage
