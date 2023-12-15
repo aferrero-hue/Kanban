@@ -158,6 +158,9 @@ saveTaskBtn.addEventListener("click", () => {
   const responsible = document.getElementById("task-responsible").value;
   const priority = document.getElementById("task-priority").value;
 
+  if(description == "" || dueDate == "" || responsible == ""){
+    alert("aaa");
+  }
   const updatedTask = {
     code,
     description,
