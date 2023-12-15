@@ -44,23 +44,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Evento al hacer clic en cualquier parte del documento
-document.addEventListener("mouseover", (e) => {
-  if (e.target.classList.contains("task")) {
-    // Restaura el color original de la tarea previamente seleccionada
-    if (selectedTaskColor !== "" && selectedTask !== null && selectedTask !== e.target) {
-      selectedTask.style.backgroundColor = selectedTaskColor;
-    }
-
-    // Actualiza la tarea seleccionada y su color original
-    selectedTask = e.target;
-    selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
-
-    // Establece el color de la tarea como gris
-    selectedTask.style.backgroundColor = "grey";
-  }
-});
-
 document.addEventListener("mouseout", (e) => {
   if (e.target.classList.contains("task") && selectedTask !== e.target) {
     e.target.style.backgroundColor = selectedTaskColor;
