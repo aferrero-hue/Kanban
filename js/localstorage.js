@@ -26,22 +26,3 @@ function updateTaskInLocalStorage(updatedTask) {
   });
   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 }
-
-// Actualización de la función deleteTaskFromLocalStorage
-function deleteTaskFromLocalStorage(taskId) {
-  const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.filter(task => task.code !== taskId);
-  saveTasksToLocalStorage(updatedTasks); // Guarda la lista actualizada
-}
-
-// Actualización de la función updateTaskInLocalStorage
-function updateTaskInLocalStorage(updatedTask) {
-  const tasks = getTasksFromLocalStorage();
-  const updatedTasks = tasks.map(task => {
-    if (task.code === updatedTask.code) {
-      return updatedTask;
-    }
-    return task;
-  });
-  saveTasksToLocalStorage(updatedTasks); // Guarda la lista actualizada
-}
