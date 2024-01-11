@@ -14,8 +14,12 @@ const infoModal = document.getElementById("info");
 let selectedTaskColor = "";
 let selectedTask = null;
 
+let currentTask = null;
 
-  // Funció per generar una ID unica.
+//Distingir crear i editar
+let editing = false;
+
+// Funció per generar una ID unica.
 function generateid(){
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
@@ -102,6 +106,9 @@ addBtn.addEventListener("click", () => {
   document.getElementById("task-responsible").value = "";
   document.getElementById("task-priority").value = "verd";
 
+  //Creant tasca no editant:
+  editing = false;
+
   // Muestra el modal de agregar
   modal.style.display = "flex";
 });
@@ -112,12 +119,17 @@ modifyBtn.addEventListener("click", () => {
     // Rellena el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
     document.getElementById("task-description").value = selectedTask.innerText || "";
+    //document.getElementById("task-description").value = selectedTask.dataset.description || "";
     document.getElementById("task-creation-date").innerHTML =
       selectedTask.dataset.creationDate || "";
     document.getElementById("task-due-date").value = selectedTask.dataset.dueDate || "";
     document.getElementById("task-responsible").value =
       selectedTask.dataset.responsible || "";
     document.getElementById("task-priority").value = selectedTask.dataset.priority || "verd";
+
+    //Creant tasca no editant:
+    editing = true;
+    currentTask = selectedTask;
 
     // Muestra el modal de modificación
     modal.style.display = "flex";
@@ -167,20 +179,25 @@ saveTaskBtn.addEventListener("click", () => {
   };
 
   if(description != "" && dueDate != "" && responsible != ""){
-    if (selectedTask) {
+    //if (selectedTask) {
+    if(editing){
       // Modifica la tarea existente con los nuevos datos
-      selectedTask.dataset.code = code;
-      selectedTask.dataset.creationDate = creationDate;
-      selectedTask.dataset.dueDate = dueDate;
-      selectedTask.dataset.responsible = responsible;
-      selectedTask.dataset.priority = priority;
-      selectedTask.innerText = description;
+      currentTask.dataset.code = code;
+      currentTask.dataset.description = description;
+      currentTask.dataset.creationDate = creationDate;
+      currentTask.dataset.dueDate = dueDate;
+      currentTask.dataset.responsible = responsible;
+      currentTask.dataset.priority = priority;
   
       // Actualiza el color de la tarea basado en la prioridad
-      updateTaskColor(selectedTask, priority);
+      updateTaskColor(currentTask, priority);
   
       // Asume que tienes una función updateTaskInLocalStorage
       updateTaskInLocalStorage(updatedTask);
+
+      // Load tasks when the page is loaded
+      window.addEventListener("load", loadTasks);
+      
     } else {
       // Crea una nueva tarea con los datos ingresados
       const newTask = document.createElement("p");
@@ -210,7 +227,7 @@ saveTaskBtn.addEventListener("click", () => {
       // Asume que tienes una función saveTaskToLocalStorage
       saveTaskToLocalStorage(updatedTask);
     }
-  
+
     // Cierra el modal
     modal.style.display = "none";
   }
