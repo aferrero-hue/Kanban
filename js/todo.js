@@ -40,6 +40,11 @@ function updateTaskColor(task, priority) {
     priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
 }
 
+// Funció per cambiar la info mostrada per pantalla:
+function updateDesc(task, desc) {
+  task.innerText = desc;
+}
+
 // Evento al hacer clic en cualquier parte del documento
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("task")) {
@@ -118,8 +123,9 @@ modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
     // Rellena el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
-    document.getElementById("task-description").value = selectedTask.innerText || "";
-    //document.getElementById("task-description").value = selectedTask.dataset.description || "";
+    //document.getElementById("task-description").value = selectedTask.innerText || "";
+    //[PENDENT] No funciona la descripció, raò desconeguda.
+    document.getElementById("task-description").value = selectedTask.dataset.description || "";
     document.getElementById("task-creation-date").innerHTML =
       selectedTask.dataset.creationDate || "";
     document.getElementById("task-due-date").value = selectedTask.dataset.dueDate || "";
@@ -151,7 +157,7 @@ deleteBtn.addEventListener("click", () => {
 infoBtn.addEventListener("click", () => {
   if (selectedTask) {
     document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
-    document.getElementById("task-info-description").innerText = selectedTask.innerText || "";
+    document.getElementById("task-info-description").innerText = selectedTask.dataset.description || "";
     document.getElementById("task-info-creation-date").innerText = selectedTask.dataset.creationDate || "";
     document.getElementById("task-info-due-date").innerText = selectedTask.dataset.dueDate || "";
     document.getElementById("task-info-responsible").innerText = selectedTask.dataset.responsible || "";
@@ -183,6 +189,7 @@ saveTaskBtn.addEventListener("click", () => {
     if(editing){
       // Modifica la tarea existente con los nuevos datos
       currentTask.dataset.code = code;
+      //currentTask.innerText = description;
       currentTask.dataset.description = description;
       currentTask.dataset.creationDate = creationDate;
       currentTask.dataset.dueDate = dueDate;
@@ -191,6 +198,9 @@ saveTaskBtn.addEventListener("click", () => {
   
       // Actualiza el color de la tarea basado en la prioridad
       updateTaskColor(currentTask, priority);
+
+      //[PENDENT]
+      updateDesc(currentTask, description);
   
       // Asume que tienes una función updateTaskInLocalStorage
       updateTaskInLocalStorage(updatedTask);
@@ -204,11 +214,12 @@ saveTaskBtn.addEventListener("click", () => {
       newTask.classList.add("task");
       newTask.setAttribute("draggable", "true");
       newTask.dataset.code = code;
+      newTask.dataset.description = description;
       newTask.dataset.creationDate = creationDate;
       newTask.dataset.dueDate = dueDate;
       newTask.dataset.responsible = responsible;
       newTask.dataset.priority = priority;
-      newTask.innerText = description;
+      //newTask.innerText = description;
   
       newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is-dragging");
@@ -223,6 +234,8 @@ saveTaskBtn.addEventListener("click", () => {
   
       // Actualiza el color de la tarea basado en la prioridad
       updateTaskColor(newTask, priority);
+
+      updateDesc(newTask, description);
   
       // Asume que tienes una función saveTaskToLocalStorage
       saveTaskToLocalStorage(updatedTask);
