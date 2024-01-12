@@ -27,22 +27,33 @@ function generateid(){
   //Funció per generar una Data actual en el moment
 function createstartdate(){
   let dateObj = new Date();
+  //[PENDENT] ES GUARDA COM A 1 NO 01 MODIFICAR?
   let month = dateObj.getUTCMonth() + 1;
   let day = dateObj.getUTCDate();
   let year = dateObj.getUTCFullYear();
-  var newdate = day + "/" + month + "/" + year;
+  var newdate = day + "-" + month + "-" + year;
   return newdate;
 }
 
 // Función para actualizar el color de la tarea basado en la prioridad
 function updateTaskColor(task, priority) {
   task.style.backgroundColor =
-    priority === "verd" ? "green" : priority === "groc" ? "yellow" : "red";
+    priority === "normal" ? "green" : priority === "urgent" ? "yellow" : "red";
 }
 
 // Funció per cambiar la info mostrada per pantalla:
 function updateDesc(task, desc) {
   task.innerText = desc;
+}
+
+// Funció per determinar si la data introduida no es correcte: [PENDENT]
+function CheckDate(dat){
+
+}
+
+//Funcio per fer desapareicer el missatge de camp buit despes
+function TimeGone(){
+  document.getElementById("camp-buit").innerHTML = "";
 }
 
 // Evento al hacer clic en cualquier parte del documento
@@ -109,7 +120,8 @@ addBtn.addEventListener("click", () => {
   document.getElementById("task-creation-date").innerHTML = createstartdate();
   document.getElementById("task-due-date").value = "";
   document.getElementById("task-responsible").value = "";
-  document.getElementById("task-priority").value = "verd";
+  document.getElementById("task-priority").value = "normal";
+  document.getElementById("camp-buit").innerHTML = "";
 
   //Creant tasca no editant:
   editing = false;
@@ -124,14 +136,14 @@ modifyBtn.addEventListener("click", () => {
     // Rellena el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
     //document.getElementById("task-description").value = selectedTask.innerText || "";
-    //[PENDENT] No funciona la descripció, raò desconeguda.
     document.getElementById("task-description").value = selectedTask.dataset.description || "";
     document.getElementById("task-creation-date").innerHTML =
       selectedTask.dataset.creationDate || "";
     document.getElementById("task-due-date").value = selectedTask.dataset.dueDate || "";
     document.getElementById("task-responsible").value =
       selectedTask.dataset.responsible || "";
-    document.getElementById("task-priority").value = selectedTask.dataset.priority || "verd";
+    document.getElementById("task-priority").value = selectedTask.dataset.priority || "normal";
+    document.getElementById("camp-buit").innerHTML = "";
 
     //Creant tasca no editant:
     editing = true;
@@ -184,8 +196,15 @@ saveTaskBtn.addEventListener("click", () => {
     priority,
   };
 
-  if(description != "" && dueDate != "" && responsible != ""){
-    //if (selectedTask) {
+  if(description == "" || dueDate == "" || responsible ==""){
+    //Missatge de camps buits
+    document.getElementById("camp-buit").innerHTML = "Hi han camps buits";
+    document.getElementById("camp-buit").style.textAlign = "center";
+    document.getElementById("camp-buit").style.fontWeight = "bold";
+    setTimeout(TimeGone, 4000);
+  }
+  else{
+    //Es guarda el codi en el Local Storage:
     if(editing){
       // Modifica la tarea existente con los nuevos datos
       currentTask.dataset.code = code;
@@ -199,7 +218,6 @@ saveTaskBtn.addEventListener("click", () => {
       // Actualiza el color de la tarea basado en la prioridad
       updateTaskColor(currentTask, priority);
 
-      //[PENDENT]
       updateDesc(currentTask, description);
   
       // Asume que tienes una función updateTaskInLocalStorage
@@ -220,6 +238,13 @@ saveTaskBtn.addEventListener("click", () => {
       newTask.dataset.responsible = responsible;
       newTask.dataset.priority = priority;
       //newTask.innerText = description;
+
+      //TEMPORAL [PENDENT] 12/01/2024
+      //NOTA: LES DOS DATES NO SEGUEIXEN EL MATEIX ORDRE
+      //NOTA: UNA UTILITZA - Y L'ALTRE /
+      //alert(dueDate.substring(0, 2));
+      //alert(dueDate.substring(2, 4));
+      //alert(dueDate.substring(5, 9));
   
       newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is-dragging");
