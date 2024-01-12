@@ -10,6 +10,10 @@ const saveTaskBtn = document.getElementById("save-task-btn");
 const infoBtn = document.getElementById("info-task-btn");
 const infoModal = document.getElementById("info");
 
+//Cambiar en el CSS [PENDENT]
+document.getElementById("camp-buit").style.textAlign = "center";
+document.getElementById("camp-buit").style.fontWeight = "bold";
+
 // Color original de la tarea seleccionada
 let selectedTaskColor = "";
 let selectedTask = null;
@@ -27,8 +31,11 @@ function generateid(){
   //Funció per generar una Data actual en el moment
 function createstartdate(){
   let dateObj = new Date();
-  //[PENDENT] ES GUARDA COM A 1 NO 01 MODIFICAR?
   let month = dateObj.getUTCMonth() + 1;
+  month = month.toString();
+  if(month.length == 1){
+    month = 0 + month;
+  }
   let day = dateObj.getUTCDate();
   let year = dateObj.getUTCFullYear();
   var newdate = day + "-" + month + "-" + year;
@@ -45,10 +52,33 @@ function updateTaskColor(task, priority) {
 function updateDesc(task, desc) {
   task.innerText = desc;
 }
-
+//Funció per cambiar l'ordre de la data quan es mostra en informació [PENDENT]
+function FixDate(due){
+  let dueY = due.substring(0, 4);
+  let dueM = due.substring(5,7);
+  let dueD = due.substring(8,10);
+  let result = dueD + "-" + dueM + "-" + dueY;
+  return result;
+}
 // Funció per determinar si la data introduida no es correcte: [PENDENT]
-function CheckDate(dat){
-
+function CheckDate(dat, due){
+  //DATE: DAY-MONTH-YEAR
+  //DUE: MONTH-YEAR-DAY
+  let dateposD = dat.substring(0, 2);
+  let dateposM = dat.substring(3,5);
+  let dateposY = dat.substring(6,10);
+  let dueposY = due.substring(0, 4);
+  let dueposM = due.substring(5,7);
+  let dueposD = due.substring(8,10);
+  let validation = false;
+  if(parseInt(dateposY) <= parseInt(dueposY)){
+    if(parseInt(dateposM) <= parseInt(dueposM)){
+      if(parseInt(dateposD) <= parseInt(dueposD)){
+        validation = true;
+      }
+    }
+  }
+  return validation;
 }
 
 //Funcio per fer desapareicer el missatge de camp buit despes
@@ -114,8 +144,10 @@ form.addEventListener("submit", (e) => {
 
 // Botón para agregar nueva tarea
 addBtn.addEventListener("click", () => {
+
+
   // Limpia el formulario antes de agregar una nueva tarea
-  document.getElementById("task-code").innerHTML = generateid();
+  document.getElementById("task-code").innerHTML = generateid();  
   document.getElementById("task-description").value = "";
   document.getElementById("task-creation-date").innerHTML = createstartdate();
   document.getElementById("task-due-date").value = "";
@@ -135,7 +167,6 @@ modifyBtn.addEventListener("click", () => {
   if (selectedTask) {
     // Rellena el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
-    //document.getElementById("task-description").value = selectedTask.innerText || "";
     document.getElementById("task-description").value = selectedTask.dataset.description || "";
     document.getElementById("task-creation-date").innerHTML =
       selectedTask.dataset.creationDate || "";
@@ -168,10 +199,11 @@ deleteBtn.addEventListener("click", () => {
 
 infoBtn.addEventListener("click", () => {
   if (selectedTask) {
+    //Dades a mostrar:
     document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
     document.getElementById("task-info-description").innerText = selectedTask.dataset.description || "";
     document.getElementById("task-info-creation-date").innerText = selectedTask.dataset.creationDate || "";
-    document.getElementById("task-info-due-date").innerText = selectedTask.dataset.dueDate || "";
+    document.getElementById("task-info-due-date").innerText = FixDate(selectedTask.dataset.dueDate) || "";
     document.getElementById("task-info-responsible").innerText = selectedTask.dataset.responsible || "";
     document.getElementById("task-info-priority").innerText = selectedTask.dataset.priority || "";
 
@@ -199,8 +231,10 @@ saveTaskBtn.addEventListener("click", () => {
   if(description == "" || dueDate == "" || responsible ==""){
     //Missatge de camps buits
     document.getElementById("camp-buit").innerHTML = "Completa tots els camps";
-    document.getElementById("camp-buit").style.textAlign = "center";
-    document.getElementById("camp-buit").style.fontWeight = "bold";
+    setTimeout(TimeGone, 2800);
+  }
+  else if(CheckDate(creationDate, dueDate) != true){
+    document.getElementById("camp-buit").innerHTML = "La data de finalització es menor a la de creació";
     setTimeout(TimeGone, 2800);
   }
   else{
@@ -208,7 +242,6 @@ saveTaskBtn.addEventListener("click", () => {
     if(editing){
       // Modifica la tarea existente con los nuevos datos
       currentTask.dataset.code = code;
-      //currentTask.innerText = description;
       currentTask.dataset.description = description;
       currentTask.dataset.creationDate = creationDate;
       currentTask.dataset.dueDate = dueDate;
@@ -237,14 +270,6 @@ saveTaskBtn.addEventListener("click", () => {
       newTask.dataset.dueDate = dueDate;
       newTask.dataset.responsible = responsible;
       newTask.dataset.priority = priority;
-      //newTask.innerText = description;
-
-      //TEMPORAL [PENDENT] 12/01/2024
-      //NOTA: LES DOS DATES NO SEGUEIXEN EL MATEIX ORDRE
-      //NOTA: UNA UTILITZA - Y L'ALTRE /
-      //alert(dueDate.substring(0, 2));
-      //alert(dueDate.substring(2, 4));
-      //alert(dueDate.substring(5, 9));
   
       newTask.addEventListener("dragstart", () => {
         newTask.classList.add("is-dragging");
@@ -261,11 +286,10 @@ saveTaskBtn.addEventListener("click", () => {
       updateTaskColor(newTask, priority);
 
       updateDesc(newTask, description);
-  
+
       // Asume que tienes una función saveTaskToLocalStorage
       saveTaskToLocalStorage(updatedTask);
     }
-
     // Cierra el modal
     modal.style.display = "none";
   }

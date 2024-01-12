@@ -59,18 +59,14 @@
     <div id="modal" class="modal">
       <div class="modal-content">
         <span class="close">&times;</span>
-        <label>Codi:</label>
-        <label id="task-code"></label>
-        <br>
-        <br>
-        <label for="task-description">Descripció:</label>
+        <label id="task-code-label" hidden="hidden">Codi:</label>
+        <label id="task-code" hidden="hidden"></label>
+        <label for="task-description" >Descripció:</label>
         <input type="text" id="task-description" />
         <br>
         <br>
-        <label>Data de Creació:</label>
-        <label id="task-creation-date"></label>
-        <br>
-        <br>
+        <label id="task-creation-date-label" hidden="hidden">Data de Creació:</label>
+        <label id="task-creation-date" hidden="hidden"></label>
         <label for="task-due-date">Data de Previsió de Finalització:</label>
         <input type="date" id="task-due-date" />
         <br>
@@ -85,7 +81,6 @@
           <option value="urgent">Urgent</option>
           <option value="greu">Greu</option>
         </select>
-        <br>
         <br>
         <p id="camp-buit"></p>
         <br>
