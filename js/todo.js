@@ -145,7 +145,6 @@ form.addEventListener("submit", (e) => {
 // Botón para agregar nueva tarea
 addBtn.addEventListener("click", () => {
 
-
   // Limpia el formulario antes de agregar una nueva tarea
   document.getElementById("task-code").innerHTML = generateid();  
   document.getElementById("task-description").value = "";
@@ -338,6 +337,9 @@ closeModalBtn.addEventListener("click", () => {
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
+  }
+  else if(e.target === infoModal){
+    infoModal.style.display = "none";
   }
 });
 
