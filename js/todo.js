@@ -198,10 +198,10 @@ saveTaskBtn.addEventListener("click", () => {
 
   if(description == "" || dueDate == "" || responsible ==""){
     //Missatge de camps buits
-    document.getElementById("camp-buit").innerHTML = "Hi han camps buits";
+    document.getElementById("camp-buit").innerHTML = "Completa tots els camps";
     document.getElementById("camp-buit").style.textAlign = "center";
     document.getElementById("camp-buit").style.fontWeight = "bold";
-    setTimeout(TimeGone, 4000);
+    setTimeout(TimeGone, 2800);
   }
   else{
     //Es guarda el codi en el Local Storage:
