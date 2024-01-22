@@ -12,6 +12,7 @@ const infoModal = document.getElementById("info");
 
 let isSelected = false;
 let correctDate = false;
+let lastSelectedTask = "";
 
 // Color original de la tarea seleccionada
 let selectedTaskColor = "";
@@ -669,7 +670,6 @@ function modifyResponsibleInLocalStorage(oldName, newName) {
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
-
 const themeBtn = document.getElementById("theme-btn");
 const themeModal = document.getElementById("themeModal");
 const closeThemeModalBtn = document.querySelector("#themeModal .close");
@@ -722,6 +722,7 @@ const prioritiesModalDel = document.getElementById("priorities-modal-delete");
 const prioriyDelInput = document.getElementById("del-priority");
 const removePriorityBtnConfirm = document.getElementById("confirm-remove-priority-btn");
 const removePriorityLab = document.getElementById("camp-buit-prio-del");
+const removePriorityLbl = document.getElementById("remove-priority-lbl");
 
 
 // Evento para abrir el modal de gestión de prioridades
@@ -729,6 +730,7 @@ managePrioritiesBtn.addEventListener("click", () => {
   populatePrioritiesList();
   fillRemovePriorityDropdown(); // Agrega esta línea
   priorityNameInput.value = "";
+  Check4Priorities();
   prioritiesModal.style.display = "flex";
 });
 
@@ -768,7 +770,7 @@ addPriorityBtn.addEventListener("click", () => {
       document.getElementById("camp-buit-prio").innerHTML = "Ja existeix una prioritat amb aquest nom";
       setTimeout(TimeGone, 2800);
     }
-
+    Check4Priorities();
   }
 });
 
@@ -806,6 +808,7 @@ removePriorityBtnConfirm.addEventListener("click", () => {
     document.getElementById("camp-buit-del-res").innerHTML = "El nom introduit no es correcte";
     setTimeout(TimeGone, 2800);
   }
+  Check4Priorities();
 });
 
 
@@ -820,6 +823,19 @@ function fillRemovePriorityDropdown() {
     option.innerText = priority.name;
     removePriorityDropdown.appendChild(option);
   });
+}
+
+//[PENDENT] aaaa
+function Check4Priorities(){
+  if(removePrioritySel.value.match(/^ *$/)){
+    removePrioritySel.style.display = "none";
+    removePriorityLbl.style.display = "none";
+    removePriorityBtn.style.display = "none";
+  }else{
+    removePrioritySel.style.display = "block";
+    removePriorityLbl.style.display = "block";
+    removePriorityBtn.style.display = "block";
+  }
 }
 
 //[PENDENT] borrar
