@@ -1,16 +1,17 @@
-ERRORS
-------
+Benvinguts a l'aplicatiu Kanban
 
-0. Interfície:
- - Responsive per mòbil i tablet.
- 
-1. localStoratge:
- - No es guarda l'estat de la tasca. TODO, Doing, Done
+En aquest aplicatiu, podreu organitzar-vos en les vostres tasques del dia a dia de forma independent o en equip.
+Kanban, compta amb una interfície per poder arrastar les tasques i canviar-les d'estat.
 
-2. Botó Afegir
- - No afegir una tasca buida
- - Una tasca no pot tenir el mateix codi.
+La aplicació conté set opcions, de les quals son les següents:
 
-3. Botó Modificar
- - No modifica, afegeix una tasca. 
- 
+- Afegir: afegir una tasca
+- Modificar: modificar una tasca
+- Eliminar: eliminar una tasca
+- Informació: veure la informació d'una tasca
+- Responsables: crear, modificar i eliminar un responsable
+- Tema: escollir un tema
+- Prioritats: crear una prioritat
+
+Una de les coses que heu d'entendre d'aquest aplicatiu, és que una tasca ha de tenir un responsable i al vegada, una prioritat. Per tant, per crear una tasca, hem de crear abans un responsable i una prioritat.
+A partir d'aquí, ja podreu crear les vostres tasques.
