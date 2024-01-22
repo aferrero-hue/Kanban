@@ -12,4 +12,5 @@ ERRORS
  - Una tasca no pot tenir el mateix codi.
 
 3. Botó Modificar
- - No modifica, afegeix una tasca.
+ - No modifica, afegeix una tasca. 
+ 
