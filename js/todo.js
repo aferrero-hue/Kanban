@@ -104,15 +104,21 @@ document.addEventListener("click", (e) => {
     if (selectedTaskColor !== "" && selectedTask !== null) {
       selectedTask.style.backgroundColor = selectedTaskColor;
     }
-
+    //---------------------------------------------------
     // Actualiza la tarea seleccionada y su color original
     selectedTask = e.target;
-    selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
-
-    // Establece el color de la tarea como azul
-    selectedTask.style.backgroundColor = "grey";
+    if(selectedTask.innerHTML == lastSelectedTask.innerHTML){
+      isSelected = false;
+      lastSelectedTask = "";
+    }else{
+      selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
+      // Establece el color de la tarea como azul
+      selectedTask.style.backgroundColor = "grey";
+      lastSelectedTask = e.target;
+    }
   } else {
     isSelected = false;
+    lastSelectedTask = "";
 
     // Si se hace clic fuera de una tarea, desselecciona la tarea
     if (selectedTaskColor !== "" && selectedTask !== null) {
