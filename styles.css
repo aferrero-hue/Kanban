@@ -1,4 +1,4 @@
-/* ---- RESET/BASIC STYLING ---- */
+/* ---- RESTAURAR/ESTIL BÀSIC ---- */
 * {
   padding: 0;
   margin: 0;
@@ -25,15 +25,19 @@
 .menu {
   background-image: url(images/background.jpg);
   color: white;
-  border-bottom: solid 5px grey;
+  border-bottom: solid 5px white;
   padding-bottom: 20px;
   padding-top: 20px;
+  justify-content: space-between;
 }
 
 .menu .logo {
-  width: 3.2%;
-  float: left;
-  margin-right: 10px;
+  width: 11rem;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Afegeix una transició per al color de fons i la transformació */
+}
+
+.logo:hover {
+  transform: scale(1.05); /* Aplicar un efecte d'escala al passar el cursor */
 }
 
 .menu .institut, .nom {
@@ -49,7 +53,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 16px;
+  gap: 40px;
 
   padding: 24px 32px;
 
@@ -67,33 +71,38 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-
   background: #f4f4f4;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
-
   padding: 12px;
   border-radius: 4px;
   width: 225px;
   min-height: 120px;
-
   flex-shrink: 0;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Afegeix una transició per al color de fons i la transformació */
+
+}
+
+.swim-lane:hover {
+  background-color: #f0f0f0; /* Canvia el color de fons al passar el cursor */
+  transform: scale(1.05); /* Aplicar un efecte d'escala al passar el cursor */
 }
 
 .task {
   background: white;
   color: black;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
-
   padding: 12px;
   border-radius: 4px;
-
   font-size: 16px;
   cursor: move;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Afegeix una transició per al color de fons i la transformació */
 }
 
 .task:hover {
-  background-color: rgb(183, 182, 182);
+  background-color: #f0f0f0; /* Canvia el color de fons al passar el cursor */
+  transform: scale(1.05); /* Aplicar un efecte d'escala al passar el cursor */
 }
+
 
 .is-dragging {
   scale: 1.05;
@@ -115,6 +124,15 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Afegeix una transició per al color de fons i la transformació */
+
+}
+
+.menu-options button:hover {
+  background-color: rgb(68, 137, 202); /* Canvia el color de fons al passar el cursor */
+  color: #ffffff; /* Canvia el color del text al passar el cursor */
+  border-color: white;
+  transform: scale(1.05); /* Aplicar un efecte d'escala al passar el cursor */
 }
 
 /* Afegit al teu codi actual */
@@ -133,8 +151,11 @@
 
 .modal-content {
   background-color: white;
-  padding: 20px;
+  padding: 40px;
   border-radius: 8px;
+  max-width: 400px; /* Limitant l'amplada màxima del modal */
+  margin: auto; /* Centre el modal horitzontalment */
+  position: relative;
 }
 
 .close {
@@ -143,20 +164,127 @@
   right: 10px;
   font-size: 20px;
   cursor: pointer;
+  color: #555; /* Canvia el color del botó de tancament */
+}
+
+/* Estil per a les etiquetes en el modal */
+.modal-content label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* Estil per introduir text i seleccionar elements */
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Estil per als botons en el modal */
+.modal-content button {
+  background-color: #28c1e0;
   color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 8px;
 }
 
-footer {
-  margin-bottom: 10px;
-  text-align: center;
-  border-top: solid 5px grey;
-  background-color: #65B1F7;
+/* Estil per al botó de tancament en el modal */
+.modal-content button.close-btn {
+  background-color: #f44336; /* Color vermell per al botó de tancar */
 }
 
-/* Consulta de mitjà per a tauletes */
-@media screen and (max-width: 768px) {
-  .board {
-    background-position: top;
+/* Estil per als botons en el modal responsable */
+#responsible-modal button {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+/* Estil per als botons en el modal responsable */
+#responsible-modal button#remove-responsible-btn {
+  background-color: #f44336; /* Red color for remove responsible button */
+}
+
+/* Estil per als botons en el modal d'informació */
+#info button {
+  background-color: #2196f3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* Estil per als botons en el modal d'informació */
+#info button.close-btn {
+  background-color: #f44336; /* Color vermell per al botó de tanca */
+}
+
+.abrir {
+  display: none;
+}
+
+.img-mobile {
+  display: none;
+}
+
+/* Ajustaments addicionals per a dispositius mòbils i tauletes */
+@media screen and (max-width: 850px) {
+  
+  .img-mobile {
+    display: block;
+    width: 10rem;
+    margin: 0 auto; /* Centrar la imatge */
+  }
+
+  .institut,
+  .nom {
+    display: none;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .menu-options {
+    flex-direction: column;
+    align-items: stretch; /* Fer que les opcions del menú s'estiguin a tota l'amplada */
+    margin-top: 25px; /* Afegeix un espai entre els elements del menú */
+    margin-right: 0;
+    width: 100%;
+  }
+
+  /* Ajustos per a les opcions del menú mòbil */
+  .menu-options button {
+    text-align: center;
+    margin-right: 0;
+    width: 100%;
+    border-radius: 1px;
+    border-bottom: 1px black solid;
+    text-align: center; /* Centra el text */
+    padding: 10px 0; /* Afegeix farciment per a una millor aparença */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Afegeix una ombra de caixa subtil */    
+  }
+
+  /* Estils addicionals per a un millor espai i aspecte */
+  .menu-options button:last-child {
+    border-bottom: none; /* Elimina la vora de l'últim botó */
   }
 
   .lanes {
@@ -167,15 +295,5 @@ footer {
   .swim-lane {
     width: 100%;
     margin-bottom: 16px;
-  }
-
-  .menu .logo,
-  .institut,
-  .nom {
-    margin-left: 10px;
-  }
-
-  .menu-options {
-    margin-right: 10px;
   }
 }

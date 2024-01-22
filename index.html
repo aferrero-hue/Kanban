@@ -1,105 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Drag & Drop API</title>
-
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
-    <script src="js/drag.js" defer></script>
-    <script src="js/todo.js" defer></script>
-    <script src="js/localstorage.js" defer></script>
-  </head>
-  <body>
-    <div class="menu">
-      <img class="logo" src="images/campalans.png">
-      <p class="institut">Institut</p>
-      <p class="nom">Rafael Campalans</p>
-      <!-- Afegit per a les opcions -->
-      <div class="menu-options">
-        <button id="add-task-btn">Afegir</button>
-        <button id="modify-task-btn">Modificar</button>
-        <button id="delete-task-btn">Eliminar</button>
-        <button id="info-task-btn">Informació</button>
+   <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Kanban</title>
+      <link rel="stylesheet" href="styles.css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+      <script src="js/drag.js" defer></script>
+      <script src="js/todo.js" defer></script>
+      <script src="js/localstorage.js" defer></script>
+   </head>
+   <body>
+      <div class="menu">
+         <img class="logo" src="images/imatge.png">
+         <!-- Menú d'opcions -->
+         <button id="abrir" class="abrir"><i class="bi bi-list"></i></button>
+         <img class="img-mobile" src="images/imatge.png">
+         <div class="menu-options">
+            <button id="add-task-btn">Afegir</button>
+            <button id="modify-task-btn">Modificar</button>
+            <button id="delete-task-btn">Eliminar</button>
+            <button id="info-task-btn">Informació</button>
+            <button id="manage-responsible-btn">Responsables</button>
+            <button id="manage-priorities-btn">Prioritats</button>
+            <button id="theme-btn" class="theme-btn-animate">Tema</button>
+         </div>
       </div>
-    </div>
-
-    <div class="board">
-      <form id="todo-form">
-      </form>
-
-      <div class="lanes">
-        <div class="swim-lane" id="todo-lane">
-          <h3 class="heading">TODO</h3>
-
-          <p class="task" draggable="true">Get groceries</p>
-          <p class="task" draggable="true">Feed the dogs</p>
-          <p class="task" draggable="true">Mow the lawn</p>
-        </div>
-
-        <div class="swim-lane">
-          <h3 class="heading">Doing</h3>
-
-          <p class="task" draggable="true">Binge 80 hours of Game of Thrones</p>
-        </div>
-
-        <div class="swim-lane">
-          <h3 class="heading">Done</h3>
-
-          <p class="task" draggable="true">
-            Watch video of a man raising a grocery store lobster as a pet
-          </p>
-        </div>
+      <div class="board">
+         <form id="todo-form">
+         </form>
+         <div class="lanes">
+            <div class="swim-lane" id="todo-lane">
+               <h3 class="heading">TODO</h3>
+            </div>
+            <div class="swim-lane" id="doing-lane">
+               <h3 class="heading">Doing</h3>
+            </div>
+            <div class="swim-lane" id="done-lane">
+               <h3 class="heading">Done</h3>
+            </div>
+         </div>
       </div>
-    </div>
-
-    <!-- Afegit modal per modificar/eliminar tasques -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <label id="task-code-label" hidden="hidden">Codi:</label>
-        <label id="task-code" hidden="hidden"></label>
-        <label for="task-description" >Descripció:</label>
-        <input type="text" id="task-description" />
-        <br>
-        <br>
-        <label id="task-creation-date-label" hidden="hidden">Data de Creació:</label>
-        <label id="task-creation-date" hidden="hidden"></label>
-        <label for="task-due-date">Data de Previsió de Finalització:</label>
-        <input type="date" id="task-due-date" />
-        <br>
-        <br>
-        <label for="task-responsible">Nom del Responsable:</label>
-        <input type="text" id="task-responsible" />
-        <br>
-        <br>
-        <label for="task-priority">Prioritat:</label>
-        <select id="task-priority">
-          <option value="normal">Normal</option>
-          <option value="urgent">Urgent</option>
-          <option value="greu">Greu</option>
-        </select>
-        <br>
-        <p id="camp-buit"></p>
-        <br>
-        <button id="save-task-btn">Desar</button>
-      </div>
-    </div>
-
-        <!-- Afegit modal per mostrar informació de tasques -->
-        <div id="info" class="modal">
-          <div class="modal-content">
+      <!-- Afegit modal per modificar/eliminar tasques -->
+      <div id="modal" class="modal">
+         <div class="modal-content">
             <span class="close">&times;</span>
+            <h2>Gestió de les tasques</h2>
+            <label id="task-code"></label>
+            <br>
+            <label for="task-description">Descripció:</label>
+            <input type="text" id="task-description" />
+            <label id="task-creation-date"></label>
+            <br>
+            <label for="task-due-date">Data de Finalització:</label>
+            <input type="date" id="task-due-date" />
+            <br>
+            <label for="task-responsible">Nom del responsable:</label>
+            <select id="task-responsible"></select>
+            <br>
+            <label for="task-priority">Prioritat:</label>
+            <select id="task-priority">
+            </select>
+            <br>
+            <p id="camp-buit"></p>
+            <br>
+            <button id="save-task-btn">Desar</button>
+         </div>
+      </div>
+      <!-- Modal para cambiar el tema -->
+      <div id="themeModal" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <label for="theme-select">Selecciona un tema:</label>
+            <select id="theme-select">
+               <option value="verde">Verd</option>
+               <option value="rojo">Vermell</option>
+               <option value="azul">Blau</option>
+            </select>
+            <button id="save-theme-btn" class="close-btn">Desar</button>
+         </div>
+      </div>
+      <!-- Modal per mostrar informació de tasques -->
+      <div id="info" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Informació de la tasca</h2>
             <p><strong>Codi:</strong> <span id="task-info-code"></span></p>
             <p><strong>Descripció:</strong> <span id="task-info-description"></span></p>
             <p><strong>Data de Creació:</strong> <span id="task-info-creation-date"></span></p>
-            <p><strong>Data de Previsió de Finalització:</strong> <span id="task-info-due-date"></span></p>
+            <p><strong>Data de Finalització:</strong> <span id="task-info-due-date"></span></p>
             <p><strong>Nom del Responsable:</strong> <span id="task-info-responsible"></span></p>
             <p><strong>Prioritat:</strong> <span id="task-info-priority"></span></p>
-          </div>
-        </div>
-
-  </body>
+         </div>
+      </div>
+      <!-- Modal para gestionar responsables -->
+      <div id="responsible-modal" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Panell dels responsables</h2>
+            <br>
+            <ul id="responsibles-list"></ul>
+            <label for="new-responsible">Nou responsable:</label>
+            <br>
+            <input type="text" id="new-responsible" />
+            <p id="camp-buit-afegir"></p>
+            <br>
+            <button id="add-responsible-btn">Afegir</button>
+            <br>
+            <br>
+            <label for="remove-responsible">Responsable:</label>
+            <select id="remove-responsible"></select>
+            <p id="camp-buit-rem"></p>
+            <br>
+            <button id="remove-responsible-btn">Eliminar</button>
+            <br>
+            <br>
+            <label for="modified-responsible" id="modified-label">Nou nom:</label>
+            <input type="text" id="modified-responsible" />
+            <p id="camp-buit-mod"></p>
+            <br>
+            <button id="confirm-modify-btn">Modificar</button>
+            <br>
+         </div>
+      </div>
+      <!-- Modal para eliminar responsables -->
+      <div id="responsible-modal-delete" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Eliminar responsable</h2>
+            <br>
+            <label id="del-responsible-question">Estas segur que vols eliminar aquest responsable?</label>
+            <label for="del-responsible">Escriu el nom del responsable:</label>
+            <p id="camp-buit-del"></p>
+            <br>
+            <input type="text" id="del-responsible" />
+            <button id="confirm-remove-responsible-btn">Eliminar</button>
+            <br>
+         </div>
+      </div>
+      <!-- Modal para gestionar prioritats -->
+      <div id="priorities-modal" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Menú de les prioritats:</h2>
+            <br>
+            <ul id="priorities-list"></ul>
+            <label for="priority-name">Nom de la Prioritat:</label>
+            <input type="text" id="priority-name" />
+            <p id="camp-buit-prio"></p>
+            <br>
+            <label for="priority-color">Color de la Prioritat:</label>
+            <input type="color" id="priority-color" />
+            <br>
+            <label for="remove-priority">Prioritat:</label>
+            <select id="remove-priority"></select>
+            <p id="camp-buit-prio-del"></p>
+            <button id="add-priority-btn">Afegir</button>
+            <button id="remove-priority-btn">Eliminar</button>
+         </div>
+      </div>
+      <!-- Modal para eliminar prioritats -->
+      <div id="priorities-modal-delete" class="modal">
+         <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Eliminar prioritat:</h2>
+            <br>
+            <label id="del-priority-question">Estas segur que vols eliminar aquesta prioritat?</label>
+            <label for="del-priority">Escriu el nom de la prioritat:</label>
+            <p id="camp-buit-del-res"></p>
+            <br>
+            <input type="text" id="del-priority" />
+            <button id="confirm-remove-priority-btn">Eliminar</button>
+            <br>
+         </div>
+      </div>
+   </body>
 </html>
