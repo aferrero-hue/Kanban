@@ -219,8 +219,10 @@ modifyBtn.addEventListener("click", () => {
   if (isSelected) {
     // Rellenar el formulario con los datos de la tarea seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
+    document.getElementById("task-code").style.display = "none"
     document.getElementById("task-description").value = selectedTask.dataset.description || "";
     document.getElementById("task-creation-date").innerHTML = selectedTask.dataset.creationDate || "";
+    document.getElementById("task-creation-date").style.display = "none"
     document.getElementById("task-due-date").value = selectedTask.dataset.dueDate || "";
     document.getElementById("task-responsible").value = selectedTask.dataset.responsible || "";
     document.getElementById("camp-buit").innerHTML = "";
@@ -582,7 +584,7 @@ removeResponsibleBtn.addEventListener("click", () => {
       document.getElementById("del-responsible").value = "";
       responsibleModalDel.style.display = "flex";
     }else{
-      delResponsibleLabel.innerHTML = "No es pot eliminar aquesta prioritat degut a que una tasca està utilitzant aquesta prioritat.";
+      delResponsibleLabel.innerHTML = "No es pot eliminar aquest responsable degut a que una tasca està utilitzant aquest responsable.";
       setTimeout(TimeGone, 2800);
     }
   }
