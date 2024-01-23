@@ -1,23 +1,25 @@
 // localStorage.js
 
-// Funció per guardar tascas al localStorage
+// Funció per guardar tasques al localStorage
 function saveTaskToLocalStorage(task) {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.push(task);
   localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
+// Funció per obtenir tasques del localStorage
 function getTasksFromLocalStorage() {
   return JSON.parse(localStorage.getItem('tasks')) || [];
 }
  
-
+// Funció eliminar tasques del localStorage
 function deleteTaskFromLocalStorage(taskId) {
   const tasks = getTasksFromLocalStorage();
   const updatedTasks = tasks.filter(task => task.code !== taskId); // Utilitza "code" en lloc de "id" si és la propietat correcta
   localStorage.setItem('tasks', JSON.stringify(updatedTasks));
 }
 
+// Funció per modificar tasques en el localStorage
 function updateTaskInLocalStorage(updatedTask) {
   const tasks = getTasksFromLocalStorage();
   const updatedTasks = tasks.map(task => {
@@ -59,6 +61,7 @@ function getPrioritiesFromLocalStorage() {
   return priorities;
 }
 
+// Funció per guardar prioritats en el LocalStorage
 function savePrioritiesToLocalStorage(priorities) {
   localStorage.setItem("priorities", JSON.stringify(priorities));
 }
