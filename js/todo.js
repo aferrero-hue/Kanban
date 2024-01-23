@@ -423,7 +423,7 @@ saveTaskBtn.addEventListener("click", () => {
         modal.style.display = "none";
       }
     }else{
-      document.getElementById("camp-buit").innerHTML = "La data introduida no es correcte";
+      document.getElementById("camp-buit").innerHTML = "La data introduida és inferior";
       setTimeout(TimeGone, 4000);
     }
   }
@@ -586,10 +586,10 @@ addResponsibleBtn.addEventListener("click", () => {
       populateResponsiblesList();
       fillRemoveResponsibleDropdown();
       newResponsibleInput.value = "";
-      document.getElementById("camp-buit-afegir").innerHTML = "S'ha afegit el nou responsable";
+      document.getElementById("camp-buit-afegir").innerHTML = "Responsable afegit";
       setTimeout(TimeGone, 2800);
     }else{
-      document.getElementById("camp-buit-afegir").innerHTML = "El nom introduit ja existeix";
+      document.getElementById("camp-buit-afegir").innerHTML = "Responsable existent";
       setTimeout(TimeGone, 2800);
     }
   } else{
@@ -614,7 +614,7 @@ removeResponsibleBtn.addEventListener("click", () => {
       document.getElementById("del-responsible").value = "";
       responsibleModalDel.style.display = "flex";
     }else{
-      delResponsibleLabel.innerHTML = "No es pot eliminar aquest responsable degut a que una tasca està utilitzant aquest responsable.";
+      delResponsibleLabel.innerHTML = "Tasca asociada a aquest responsable";
       setTimeout(TimeGone, 2800);
     }
   }
@@ -632,7 +632,7 @@ confirmRemoveResponsibleBtn.addEventListener("click", () => {
     document.getElementById("del-responsible").value = "";
     responsibleModalDel.style.display = "none";
   }else{
-    document.getElementById("camp-buit-del").innerHTML = "El nom introduit no es correcte";
+    document.getElementById("camp-buit-del").innerHTML = "Nom incorrecte";
     setTimeout(TimeGone, 2800);
   }
   Check4Responsibles();
@@ -679,7 +679,7 @@ confirmModifyBtn.addEventListener("click", () => {
       populateResponsiblesList();
       fillRemoveResponsibleDropdown();
       modifiedResponsibleInput.value = "";
-      document.getElementById("camp-buit-mod").innerHTML = "S'ha modificat el nom del responsable";
+      document.getElementById("camp-buit-mod").innerHTML = "Responsable modificat";
       setTimeout(TimeGone, 2800);
     }
   }
@@ -772,10 +772,10 @@ addPriorityBtn.addEventListener("click", () => {
       populatePrioritiesList();
       fillRemovePriorityDropdown();
       priorityNameInput.value = "";
-      document.getElementById("camp-buit-prio").innerHTML = "S'ha afegit una nova prioritat";
+      document.getElementById("camp-buit-prio").innerHTML = "Prioritat afegida";
       setTimeout(TimeGone, 2800);
     }else{
-      document.getElementById("camp-buit-prio").innerHTML = "Ja existeix una prioritat amb aquest nom";
+      document.getElementById("camp-buit-prio").innerHTML = "Prioritat existent";
       setTimeout(TimeGone, 2800);
     }
     Check4Priorities();
@@ -796,7 +796,7 @@ removePriorityBtn.addEventListener("click", () => {
       document.getElementById("del-priority").value = "";
       prioritiesModalDel.style.display = "flex";
     }else{
-      removePriorityLab.innerHTML = "No es pot eliminar aquesta prioritat degut a que una tasca està utilitzant aquesta prioritat.";
+      removePriorityLab.innerHTML = "Tasca asociada a aquesta prioritat";
       setTimeout(TimeGone, 2800);
     }
   }
@@ -813,7 +813,7 @@ removePriorityBtnConfirm.addEventListener("click", () => {
     document.getElementById("del-responsible").value = "";
     prioritiesModalDel.style.display = "none";
   }else{
-    document.getElementById("camp-buit-del-res").innerHTML = "El nom introduit no es correcte";
+    document.getElementById("camp-buit-del-res").innerHTML = "Nom incorrecte";
     setTimeout(TimeGone, 2800);
   }
   Check4Priorities();
