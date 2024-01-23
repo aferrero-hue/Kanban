@@ -352,7 +352,7 @@ saveTaskBtn.addEventListener("click", () => {
     priority,
     estado, 
   };
-  if(description.match(/^ *$/) || dueDate == ""){
+  if(description.match(/^ *$/) || dueDate == "" || responsible.match(/^ *$/) || priority.match(/^ *$/)){
     document.getElementById("camp-buit").innerHTML = "Completa tots els camps";
     setTimeout(TimeGone, 2800);
   }
