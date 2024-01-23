@@ -123,14 +123,15 @@
   color: black;
   border: none;
   border-radius: 4px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease; /* Afegeix una transició per al color de fons i la transformació */
 
 }
 
 .menu-options button:hover {
-  background-color: rgb(68, 137, 202); /* Canvia el color de fons al passar el cursor */
-  color: #ffffff; /* Canvia el color del text al passar el cursor */
+  background-color: rgb(184, 184, 184);  
+  color: white; /* Canvia el color del text al passar el cursor */
   border-color: white;
   transform: scale(1.05); /* Aplicar un efecte d'escala al passar el cursor */
 }
@@ -246,11 +247,27 @@
 
 /* Ajustaments addicionals per a dispositius mòbils i tauletes */
 @media screen and (max-width: 850px) {
-  
+  .abrir {
+    display: block;
+    float: right;
+    margin-right: 20px;
+    cursor: pointer; /* Afegeix un punter al botó */
+    transition: transform 0.3s ease, background-color 0.3s ease; /* Afegeix transicions al botó */
+    background-color: transparent; /* Color de fons del botó */
+    color: white; /* Color del text del botó */
+    padding: 5px 10px; /* Ajusta l'espaiat intern del botó */
+    border-color: white; /* Elimina la vora del botó */
+    border-radius: 5px; /* Afegeix cantonades arrodonides al botó */
+  }
+
+  .abrir:hover {
+    transform: scale(1.1); /* Afegeix un efecte d'escala en passar el cursor sobre el botó */
+  }
+
   .img-mobile {
     display: block;
     width: 10rem;
-    margin: 0 auto; /* Centrar la imatge */
+    margin-left: 20px;
   }
 
   .institut,
@@ -264,27 +281,34 @@
 
   .menu-options {
     flex-direction: column;
-    align-items: stretch; /* Fer que les opcions del menú s'estiguin a tota l'amplada */
-    margin-top: 25px; /* Afegeix un espai entre els elements del menú */
+    align-items: stretch;
+    margin-top: 25px;
     margin-right: 0;
     width: 100%;
   }
 
-  /* Ajustos per a les opcions del menú mòbil */
   .menu-options button {
     text-align: center;
     margin-right: 0;
     width: 100%;
     border-radius: 1px;
     border-bottom: 1px black solid;
-    text-align: center; /* Centra el text */
-    padding: 10px 0; /* Afegeix farciment per a una millor aparença */
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Afegeix una ombra de caixa subtil */    
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Añade un puntero a los botones del menú */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Añade una transición a los botones del menú */
   }
 
-  /* Estils addicionals per a un millor espai i aspecte */
+  .menu-options button:hover {
+    background-color: rgb(214, 224, 233);
+    color: #ffffff;
+    border-color: white;
+    transform: scale(1.05);
+  }
+
   .menu-options button:last-child {
-    border-bottom: none; /* Elimina la vora de l'últim botó */
+    border-bottom: none;
   }
 
   .lanes {

@@ -11,6 +11,7 @@
       <script src="js/drag.js" defer></script>
       <script src="js/todo.js" defer></script>
       <script src="js/localstorage.js" defer></script>
+      <script src="js/navbar.js" defer></script>
    </head>
    <body>
       <div class="menu">
@@ -100,12 +101,12 @@
          <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Gestió dels responsables</h2>
-            <br>
             <ul id="responsibles-list"></ul>
-            <label for="new-responsible">Nou responsable:</label>
             <br>
+            <label for="new-responsible">Nou responsable:</label>
             <input type="text" id="new-responsible" />
             <p id="camp-buit-afegir"></p>
+            <br>
             <button id="add-responsible-btn">Afegir</button>
             <br>
             <br>
@@ -130,7 +131,6 @@
             <span class="close">&times;</span>
             <h2>Eliminar responsable</h2>
             <br>
-            <label id="del-responsible-question">Estas segur que vols eliminar aquest responsable?</label>
             <label for="del-responsible">Escriu el nom del responsable:</label>
             <p id="camp-buit-del"></p>
             <br>
@@ -166,7 +166,6 @@
             <span class="close">&times;</span>
             <h2>Eliminar prioritat</h2>
             <br>
-            <label id="del-priority-question">Estas segur que vols eliminar aquesta prioritat?</label>
             <label for="del-priority">Escriu el nom de la prioritat:</label>
             <p id="camp-buit-del-res"></p>
             <br>
@@ -174,6 +173,6 @@
             <button id="confirm-remove-priority-btn">Eliminar</button>
             <br>
          </div>
-      </div>
+      </div>       
    </body>
 </html>

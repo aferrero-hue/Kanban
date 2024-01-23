@@ -1,5 +1,6 @@
 // localStorage.js
 
+// Funció per guardar tascas al localStorage
 function saveTaskToLocalStorage(task) {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   tasks.push(task);
