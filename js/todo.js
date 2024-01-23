@@ -1,3 +1,4 @@
+// Variables generals:
 const form = document.getElementById("todo-form");
 const input = document.getElementById("todo-input");
 const todoLane = document.getElementById("todo-lane");
@@ -10,24 +11,61 @@ const saveTaskBtn = document.getElementById("save-task-btn");
 const infoBtn = document.getElementById("info-task-btn");
 const infoModal = document.getElementById("info");
 
+// Variables Responsables:
+const manageResponsibleBtn = document.getElementById("manage-responsible-btn");
+const responsibleModal = document.getElementById("responsible-modal");
+const addResponsibleBtn = document.getElementById("add-responsible-btn");
+const newResponsibleInput = document.getElementById("new-responsible");
+const removeResponsibleDropdown = document.getElementById("remove-responsible");
+const removeResponsibleBtn = document.getElementById("remove-responsible-btn");
+const responsiblesList = document.getElementById("responsibles-list");
+const responsibleModalDel = document.getElementById("responsible-modal-delete");
+const confirmRemoveResponsibleBtn = document.getElementById("confirm-remove-responsible-btn");
+const modifiedResponsibleInput = document.getElementById("modified-responsible");
+const confirmModifyBtn = document.getElementById("confirm-modify-btn");
+const modifyResponsibleLabel = document.getElementById("modified-label");
+const delResponsibleLabel = document.getElementById("camp-buit-rem");
+
+//Variables Prioritats:
+const managePrioritiesBtn = document.getElementById("manage-priorities-btn");
+const prioritiesModal = document.getElementById("priorities-modal");
+const addPriorityBtn = document.getElementById("add-priority-btn");
+const priorityNameInput = document.getElementById("priority-name");
+const priorityColorInput = document.getElementById("priority-color");
+const prioritiesList = document.getElementById("priorities-list");
+const removePriorityBtn = document.getElementById("remove-priority-btn");
+const removePrioritySel = document.getElementById("remove-priority");
+const prioritiesModalDel = document.getElementById("priorities-modal-delete");
+const prioriyDelInput = document.getElementById("del-priority");
+const removePriorityBtnConfirm = document.getElementById("confirm-remove-priority-btn");
+const removePriorityLab = document.getElementById("camp-buit-prio-del");
+const removePriorityLbl = document.getElementById("remove-priority-lbl");
+
+
+// Variables Temas:
+const themeBtn = document.getElementById("theme-btn");
+const themeModal = document.getElementById("themeModal");
+const closeThemeModalBtn = document.querySelector("#themeModal .close");
+const saveThemeBtn = document.getElementById("save-theme-btn");
+
+// Altres variables
 let isSelected = false;
 let correctDate = false;
 let lastSelectedTask = "";
-
-// Color original de la tarea seleccionada
-let selectedTaskColor = "";
-
 let currentTask = null;
 
-//Distingir crear i editar
-let editing = false;
+// Color original de la tasca seleccionada
+let selectedTaskColor = "";
 
-// Funció per generar una ID unica.
+// Distingir crear i editar
+let editing = false;
+//-----------------------------------------------------------------------------------------
+// Funció per generar una ID unica
 function generateid() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
-//Funció per generar una Data actual en el moment
+// Funció per generar una Data actual en el moment
 function createstartdate(){
   let dateObj = new Date();
   let month = dateObj.getUTCMonth() + 1;
@@ -41,7 +79,7 @@ function createstartdate(){
   return newdate;
 }
 
-//Funció per cambiar l'ordre de la data quan es mostra en informació
+// Funció per cambiar l'ordre de la data quan es mostra en informació
 function FixDate(due){
   let dueY = due.substring(0, 4);
   let dueM = due.substring(5,7);
@@ -50,13 +88,14 @@ function FixDate(due){
   return result;
 }
 
+// Validar si la data introduida es major a la de creació
 function ValidateDate(actualD, novaD){
   correctDate = false;
   //Dades data actual
   let datY = actualD.substring(6, 10);
   let datM = actualD.substring(3,5);
   let datD = actualD.substring(0,2);
-  //Dades data nova
+  //Dades data introduida
   let dueY = novaD.substring(0, 4);
   let dueM = novaD.substring(5,7);
   let dueD = novaD.substring(8,10);
@@ -73,17 +112,17 @@ function ValidateDate(actualD, novaD){
   }
 }
 
-// Función para actualizar el color de la tarea basado en la prioridad
+// Funció per actualitzar el color de la tasca basat en la prioritat
 function updateTaskColor(task, priority) {
   task.style.backgroundColor = priority;
 }
 
-// Funció per cambiar la info mostrada per pantalla:
+// Funció per cambiar la info mostrada per pantalla
 function updateDesc(task, desc) {
   task.innerText = desc;
 }
 
-//Funcio per fer desapareixer el missatge de camp buit despes
+// Funcio per fer desapareixer missatges
 function TimeGone(){
   document.getElementById("camp-buit").innerHTML = "";
   document.getElementById("camp-buit-del").innerHTML = "";
@@ -95,24 +134,22 @@ function TimeGone(){
   document.getElementById("camp-buit-rem").innerHTML = "";
 }
 
-// Evento al hacer clic en cualquier parte del documento
+// Esdeveniment en fer clic a qualsevol part del document
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("task")) {
     isSelected = true;
 
-    // Restaura el color original de la tarea previamente seleccionada
+    // Restaura el color original de la tasca prèviament seleccionada
     if (selectedTaskColor !== "" && selectedTask !== null) {
       selectedTask.style.backgroundColor = selectedTaskColor;
     }
-    //---------------------------------------------------
-    // Actualiza la tarea seleccionada y su color original
+    // Actualitza la tasca seleccionada i el color original
     selectedTask = e.target;
     if(selectedTask.innerHTML == lastSelectedTask.innerHTML){
       isSelected = false;
       lastSelectedTask = "";
     }else{
       selectedTaskColor = getComputedStyle(selectedTask).backgroundColor;
-      // Establece el color de la tarea como azul
       selectedTask.style.backgroundColor = "grey";
       lastSelectedTask = e.target;
     }
@@ -120,7 +157,7 @@ document.addEventListener("click", (e) => {
     isSelected = false;
     lastSelectedTask = "";
 
-    // Si se hace clic fuera de una tarea, desselecciona la tarea
+    // Si feu clic fora d'una tasca
     if (selectedTaskColor !== "" && selectedTask !== null) {
       selectedTask.style.backgroundColor = selectedTaskColor;
       selectedTask = null;
@@ -138,7 +175,7 @@ document.addEventListener("dragend", (e) => {
       dueDate: e.target.dataset.dueDate || "",
       responsible: e.target.dataset.responsible || "",
       priority: e.target.dataset.priority || "",
-      estado: e.target.parentElement.id || "todo-lane", // Guarda el estado actual de la tarea
+      estado: e.target.parentElement.id || "todo-lane", // Deseu l'estat actual de la tasca
     };
 
     updateTaskInLocalStorage(updatedTask);
@@ -169,9 +206,9 @@ form.addEventListener("submit", (e) => {
   input.value = "";
 });
 
-// Botón para agregar tarea
+// Botó per afegir tasca
 addBtn.addEventListener("click", () => {
-  // Limpiar el formulario antes de agregar una nueva tarea
+// Netejar el formulari abans d'afegir una tasca nova
   document.getElementById("task-code").innerHTML = generateid();
   document.getElementById("task-code").style.display = "none"
   document.getElementById("task-description").value = "";
@@ -180,18 +217,18 @@ addBtn.addEventListener("click", () => {
   document.getElementById("task-due-date").value = "";
   document.getElementById("camp-buit").innerHTML = "";
 
-  // Recuperar los responsables y prioridades del localStorage
+  // Recuperar els responsables i prioritats del localStorage
   const responsibles = getResponsiblesFromLocalStorage();
   const priorities = getPrioritiesFromLocalStorage();
 
-  // Obtener el campo de responsable y eliminar el valor anterior
+  // Obtenir el camp de responsable i eliminar el valor anterior
   const responsibleField = document.getElementById("task-responsible");
   responsibleField.value = "";
 
-  // Eliminar los elementos anteriores del desplegable de responsables
+  // Eliminar els elements anteriors del desplegable de responsables
   responsibleField.innerHTML = "";
 
-  // Crear un nuevo desplegable con los responsables
+  // Crear un nou desplegable amb els responsables
   responsibles.forEach((responsible) => {
     const option = document.createElement("option");
     option.value = responsible;
@@ -199,14 +236,14 @@ addBtn.addEventListener("click", () => {
     responsibleField.appendChild(option);
   });
 
-  // Obtener el campo de prioridad y eliminar el valor anterior
+  // Obtenir el camp de prioritat i eliminar el valor anterior
   const priorityField = document.getElementById("task-priority");
   priorityField.value = "";
 
-  // Eliminar los elementos anteriores del desplegable de prioridades
+  // Eliminar els elements anteriors del desplegable de prioritats
   priorityField.innerHTML = "";
 
-  // Crear un nuevo desplegable con las prioridades
+  // Crear un nou desplegable amb les prioritats
   priorities.forEach((priority) => {
     const option = document.createElement("option");
     option.value = priority.name;
@@ -214,17 +251,17 @@ addBtn.addEventListener("click", () => {
     priorityField.appendChild(option);
   });
 
-  // Mostrar el modal de agregar
+  // Mostrar el modal d'afegir
   modal.style.display = "flex";
 
-  // Creando tarea, no editando
+  // Creant tasca, no editant
   editing = false;
 });
 
-// Botón para modificar tarea
+// Botó per modificar tasca
 modifyBtn.addEventListener("click", () => {
   if (isSelected) {
-    // Rellenar el formulario con los datos de la tarea seleccionada
+    // Emplenar el formulari amb les dades de la tasca seleccionada
     document.getElementById("task-code").innerHTML = selectedTask.dataset.code || "";
     document.getElementById("task-code").style.display = "none"
     document.getElementById("task-description").value = selectedTask.dataset.description || "";
@@ -234,7 +271,7 @@ modifyBtn.addEventListener("click", () => {
     document.getElementById("task-responsible").value = selectedTask.dataset.responsible || "";
     document.getElementById("camp-buit").innerHTML = "";
 
-    // Rellenar opciones del desplegable de responsables
+    // Emplenar opcions del desplegable de responsables
     const responsibleField = document.getElementById("task-responsible");
     responsibleField.innerHTML = "";
     const responsibles = getResponsiblesFromLocalStorage();
@@ -245,7 +282,7 @@ modifyBtn.addEventListener("click", () => {
       responsibleField.appendChild(option);
     });
 
-    // Rellenar opciones del desplegable de prioridades
+    // Emplenar opcions del desplegable de prioritats
     const priorityField = document.getElementById("task-priority");
     priorityField.innerHTML = "";
     const priorities = getPrioritiesFromLocalStorage();
@@ -258,20 +295,20 @@ modifyBtn.addEventListener("click", () => {
 
     document.getElementById("task-priority").value = selectedTask.dataset.priority || "";
 
-    // Creando tarea, editando
+    // Creant tasca, editant
     editing = true;
     currentTask = selectedTask;
 
-    // Mostrar el modal de modificación
+    // Mostrar el modal de modificació
     modal.style.display = "flex";
   }
 });
 
-
+// Botó per eliminar tasca
 deleteBtn.addEventListener("click", () => {
   if (isSelected) {
     const taskId = selectedTask.dataset.code;
-    // Asumiendo que tienes una función deleteTaskFromLocalStorage
+    // Assumint que tens una funció delete Task From Local Storage
     deleteTaskFromLocalStorage(taskId);
 
     selectedTask.remove();
@@ -280,6 +317,7 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
+// Botó per mostrar la informació de la tasca seleccionada
 infoBtn.addEventListener("click", () => {
   if (isSelected) {
     document.getElementById("task-info-code").innerText = selectedTask.dataset.code || "";
@@ -293,6 +331,7 @@ infoBtn.addEventListener("click", () => {
   }
 });
 
+// Botó per guardar les dades d'una tasca
 saveTaskBtn.addEventListener("click", () => {
   const code = document.getElementById("task-code").innerHTML;
   const description = document.getElementById("task-description").value;
@@ -301,7 +340,7 @@ saveTaskBtn.addEventListener("click", () => {
   const responsible = document.getElementById("task-responsible").value;
   const priority = document.getElementById("task-priority").value;
 
-  // Establecer el estado predeterminado como "todo-lane"
+  // Establir l'estat predeterminat com a "tot-lane"
   const estado = "todo-lane";
 
   const updatedTask = {
@@ -311,38 +350,39 @@ saveTaskBtn.addEventListener("click", () => {
     dueDate,
     responsible,
     priority,
-    estado, // Agregar el estado al objeto de tarea
+    estado, 
   };
   if(description.match(/^ *$/) || dueDate == ""){
     document.getElementById("camp-buit").innerHTML = "Completa tots els camps";
     setTimeout(TimeGone, 2800);
   }
   else {
+    //Valida les dates introduides
     ValidateDate(creationDate, dueDate);
     if(correctDate){
-      if (editing) {
-        // Modifica la tarea existente con los nuevos datos
+      if (editing) {  //Si està modificant la Tasca
+        // Modifica la tasca existent amb les noves dades
         currentTask.dataset.code = code;
         currentTask.dataset.description = description;
         currentTask.dataset.creationDate = creationDate;
         currentTask.dataset.dueDate = dueDate;
         currentTask.dataset.responsible = responsible;
         currentTask.dataset.priority = priority;
-        currentTask.dataset.estado = estado; // Actualizar el estado
+        currentTask.dataset.estado = estado;
         const priorities = getPrioritiesFromLocalStorage();
         priorities.forEach((prior) => {
           if(prior.name == priority){
-                // Actualizar el color de la tarea basado en la prioridad
-                updateTaskColor(currentTask, prior.color);
+            // Actualitzar el color de la tasca basat en la prioritat
+            updateTaskColor(currentTask, prior.color);
           }
         });
         updateDesc(currentTask, description);
         updateTaskInLocalStorage(updatedTask);
-          // Cierra el modal
+          // Tanca el modal
           modal.style.display = "none";
   
-      } else {
-        // Crear una nueva tarea con los datos ingresados
+      } else { //Si està creant la tasca
+        // Crear una nova tasca amb les dades ingressades
         const newTask = document.createElement("p");
         newTask.classList.add("task");
         newTask.setAttribute("draggable", "true");
@@ -352,7 +392,7 @@ saveTaskBtn.addEventListener("click", () => {
         newTask.dataset.dueDate = dueDate;
         newTask.dataset.responsible = responsible;
         newTask.dataset.priority = priority;
-        newTask.dataset.estado = estado; // Establecer el estado
+        newTask.dataset.estado = estado;
         newTask.innerText = description;
   
         newTask.addEventListener("dragstart", () => {
@@ -363,23 +403,23 @@ saveTaskBtn.addEventListener("click", () => {
           newTask.classList.remove("is-dragging");
         });
   
-        // Añade la nueva tarea a la "TODO lane"
+        // Afegeix la nova tasca a la "TODO lane"
         todoLane.appendChild(newTask);
   
         const priorities = getPrioritiesFromLocalStorage();
         priorities.forEach((prior) => {
           if(prior.name == priority){
-                // Actualizar el color de la tarea basado en la prioridad
-                updateTaskColor(newTask, prior.color);
+            // Actualitzar el color de la tasca basat en la prioritat
+            updateTaskColor(newTask, prior.color);
           }
         });
   
         updateDesc(newTask, description);
   
-        // Asume que tienes una función saveTaskToLocalStorage
+        // Assumeix que tenen una funció save Task LocalStorage
         saveTaskToLocalStorage(updatedTask);
         
-        // Cierra el modal
+        // Tanca el modal
         modal.style.display = "none";
       }
     }else{
@@ -389,21 +429,20 @@ saveTaskBtn.addEventListener("click", () => {
   }
 });
 
-
 function loadTasks() {
   const tasks = getTasksFromLocalStorage();
 
-  // Obtener referencias a las columnas
+  // Obtenir referències a les columnes
   const todoLane = document.getElementById("todo-lane");
   const doingLane = document.getElementById("doing-lane");
   const doneLane = document.getElementById("done-lane");
 
-  // Limpiar las columnas antes de agregar tareas
+  // Netejar les columnes abans d'afegir tasques
   todoLane.innerHTML = "";
   doingLane.innerHTML = "";
   doneLane.innerHTML = "";
 
-  // Crear y agregar títulos a las columnas si no existen
+  // Crear i afegir títols a les columnes si no existeixen
   if (!todoLane.querySelector("h3")) {
     const todoTitle = document.createElement("h3");
     todoTitle.classList.add("heading");
@@ -428,13 +467,13 @@ function loadTasks() {
   tasks.forEach((task) => {
     const { description, priority, estado } = task;
 
-    // Crear un nuevo elemento de tarea
+    // Crear un nou element de tasca
     const newTask = document.createElement("p");
     newTask.classList.add("task");
     newTask.setAttribute("draggable", "true");
     newTask.innerText = description;
 
-    // Configurar atributos de datos
+    // Configurar atributs de dades
     Object.keys(task).forEach((key) => {
       newTask.dataset[key] = task[key];
     });
@@ -442,13 +481,12 @@ function loadTasks() {
     const priorities = getPrioritiesFromLocalStorage();
     priorities.forEach((prior) => {
       if(prior.name == priority){
-            // Actualizar el color de la tarea basado en la prioridad
-            updateTaskColor(newTask, prior.color);
+        // Actualizar el color de la tasca
+        updateTaskColor(newTask, prior.color);
       }
     });
 
-
-    // Agregar eventos de arrastrar y soltar
+    // Afegir esdeveniments d'arrossegar i deixar anar
     newTask.addEventListener("dragstart", () => {
       newTask.classList.add("is-dragging");
     });
@@ -457,7 +495,7 @@ function loadTasks() {
       newTask.classList.remove("is-dragging");
     });
 
-    // Agregar la tarea a la columna correspondiente
+    // Afegeix la tasca a la columna corresponent
     const targetLane = document.getElementById(estado);
     targetLane.appendChild(newTask);
   });
@@ -468,7 +506,7 @@ closeModalBtn.addEventListener("click", () => {
   modal.style.display = "none";
 });
 
-// Evento de clic fuera del contenido del modal para cerrar el modal
+// Esdeveniment de clic per tancar el modal d'afegir/modificar
 window.addEventListener("click", (e) => {
   if (e.target === modal) {
     modal.style.display = "none";
@@ -485,34 +523,19 @@ window.addEventListener("click", (e) => {
   else if(e.target === prioritiesModal){
     prioritiesModal.style.display = "none";
   }
-
 });
 
-// Evento de clic para cerrar el modal de información
+// Esdeveniment de clic per tancar el modal d'informació
 document.querySelector("#info .close").addEventListener("click", () => {
   infoModal.style.display = "none";
 });
 
 // Load tasks when the page is loaded
 window.addEventListener("load", loadTasks);
-//-------------------------------------------------------------------------------------------
-// Código JavaScript para gestionar responsables
-const manageResponsibleBtn = document.getElementById("manage-responsible-btn");
-const responsibleModal = document.getElementById("responsible-modal");
-const addResponsibleBtn = document.getElementById("add-responsible-btn");
-const newResponsibleInput = document.getElementById("new-responsible");
-const removeResponsibleDropdown = document.getElementById("remove-responsible");
-const removeResponsibleBtn = document.getElementById("remove-responsible-btn");
-const responsiblesList = document.getElementById("responsibles-list");
-const responsibleModalDel = document.getElementById("responsible-modal-delete");
-const confirmRemoveResponsibleBtn = document.getElementById("confirm-remove-responsible-btn");
-const modifiedResponsibleInput = document.getElementById("modified-responsible");
-const confirmModifyBtn = document.getElementById("confirm-modify-btn");
-const modifyResponsibleLabel = document.getElementById("modified-label");
-const delResponsibleLabel = document.getElementById("camp-buit-rem");
-
-
-// Evento para abrir el modal de responsables
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
+// Esdeveniment per obrir el modal de responsables
 manageResponsibleBtn.addEventListener("click", () => {
   populateResponsiblesList();
   fillRemoveResponsibleDropdown();
@@ -522,17 +545,18 @@ manageResponsibleBtn.addEventListener("click", () => {
   responsibleModal.style.display = "flex";
 });
 
-// Evento para cerrar el modal de responsables
+// Esdeveniment per tancar el modal de responsables
 document.querySelector("#responsible-modal .close").addEventListener("click", () => {
   document.getElementById("del-responsible").value = "";
   responsibleModal.style.display = "none";
 });
-// Evento para cerrar el modal de responsables (menu error)
+// Esdeveniment per tancar el modal de responsables (confirmar)
 document.querySelector("#responsible-modal-delete .close").addEventListener("click", () => {
   document.getElementById("del-responsible").value = "";
   responsibleModalDel.style.display = "none";
 });
 
+// Comprovació si hi han responsables
 function Check4Responsibles(){
   if(removeResponsibleDropdown.value.match(/^ *$/)){
     modifiedResponsibleInput.style.display = "none";
@@ -545,7 +569,7 @@ function Check4Responsibles(){
   }
 }
 
-// Evento para agregar responsable
+// Esdeveniment per afegir responsable
 addResponsibleBtn.addEventListener("click", () => {
   let validateRes = true;
   const newResponsible = newResponsibleInput.value.trim();
@@ -576,10 +600,9 @@ addResponsibleBtn.addEventListener("click", () => {
 
 });
 
-// Evento para eliminar responsable
+// Esdeveniment per eliminar responsable
 removeResponsibleBtn.addEventListener("click", () => {
   if(!document.getElementById("remove-responsible").value.match(/^ *$/)){
-    //Validació
     let foundResponsible = false;
     const allTasks = getTasksFromLocalStorage();
     allTasks.forEach((task) => {
@@ -598,6 +621,7 @@ removeResponsibleBtn.addEventListener("click", () => {
   Check4Responsibles(); 
 });
 
+// Esdeveniment per eliminar responsable (Confirmar borrat)
 confirmRemoveResponsibleBtn.addEventListener("click", () => {
   const selectedResponsible = removeResponsibleDropdown.value;
   const responsibleName = document.getElementById("del-responsible").value;
@@ -614,7 +638,7 @@ confirmRemoveResponsibleBtn.addEventListener("click", () => {
   Check4Responsibles();
 });
 
-// Función para poblar la lista de responsables
+// Funció per poblar la llista de responsables
 function populateResponsiblesList() {
   removeResponsibleDropdown.innerHTML = "";
   const responsibles = getResponsiblesFromLocalStorage();
@@ -626,7 +650,7 @@ function populateResponsiblesList() {
   });
 }
 
-// Función para llenar el menú desplegable de eliminación con los responsables actuales
+// Funció per omplir el menú desplegable d'eliminació amb els actuals responsables
 function fillRemoveResponsibleDropdown() {
   removeResponsibleDropdown.innerHTML = "";
   const responsibles = getResponsiblesFromLocalStorage();
@@ -661,7 +685,7 @@ confirmModifyBtn.addEventListener("click", () => {
   }
 });
 
-// Función para modificar un responsable en el localStorage
+// Funció per modificar un responsable al localStorage
 function modifyResponsibleInLocalStorage(oldName, newName) {
   const responsibles = getResponsiblesFromLocalStorage();
   const updatedResponsibles = responsibles.map(responsible => {
@@ -672,66 +696,44 @@ function modifyResponsibleInLocalStorage(oldName, newName) {
   });
   saveResponsiblesToLocalStorage(updatedResponsibles);
 }
-
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
-const themeBtn = document.getElementById("theme-btn");
-const themeModal = document.getElementById("themeModal");
-const closeThemeModalBtn = document.querySelector("#themeModal .close");
-const saveThemeBtn = document.getElementById("save-theme-btn");
-
-// Evento para abrir el modal de cambio de tema
+// Esdeveniment per obrir el modal de canvi de tema
 themeBtn.addEventListener("click", () => {
   themeModal.style.display = "flex";
 
-  // Agrega la clase clicked para activar la animación
+  // Afegeix la classe clicked per activar l'animació
   themeBtn.classList.add("clicked");
 
-  // Después de un tiempo, quita la clase clicked para reiniciar la animación
+  // Després d'un temps, treu la classe clicked per reiniciar l'animació
   setTimeout(() => {
     themeBtn.classList.remove("clicked");
   }, 300);
 });
 
-// Evento para cerrar el modal de cambio de tema
+// Esdeveniment per tancar el modal de canvi de tema
 closeThemeModalBtn.addEventListener("click", () => {
   themeModal.style.display = "none";
 });
 
-// Evento para guardar el tema seleccionado en el localStorage
+// Esdeveniment per desar el tema seleccionat al localStorage
 saveThemeBtn.addEventListener("click", () => {
   const themeSelect = document.getElementById("theme-select");
   const selectedTheme = themeSelect.value;
   localStorage.setItem("selectedTheme", selectedTheme);
 
-  // Aplica el tema seleccionado al cuerpo del documento y a los elementos específicos
-  //document.body.style.backgroundImage = `url(images/${selectedTheme}.jpg)`;
-  document.querySelector('.board').style.backgroundImage = `url(images/${selectedTheme}.jpg)`;
+  // Aplica el tema seleccionat al cos del document i als elements específics  document.querySelector('.board').style.backgroundImage = `url(images/${selectedTheme}.jpg)`;
   document.querySelector('.menu').style.backgroundImage = `url(images/${selectedTheme}.jpg)`;
+  document.querySelector('.board').style.backgroundImage = `url(images/${selectedTheme}.jpg)`;
 
-  // Cierra el modal
+  // Tanca el modal
   themeModal.style.display = "none";
 });
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
-const managePrioritiesBtn = document.getElementById("manage-priorities-btn");
-const prioritiesModal = document.getElementById("priorities-modal");
-const addPriorityBtn = document.getElementById("add-priority-btn");
-const priorityNameInput = document.getElementById("priority-name");
-const priorityColorInput = document.getElementById("priority-color");
-const prioritiesList = document.getElementById("priorities-list");
-const removePriorityBtn = document.getElementById("remove-priority-btn");
-const removePrioritySel = document.getElementById("remove-priority");
-const prioritiesModalDel = document.getElementById("priorities-modal-delete");
-const prioriyDelInput = document.getElementById("del-priority");
-const removePriorityBtnConfirm = document.getElementById("confirm-remove-priority-btn");
-const removePriorityLab = document.getElementById("camp-buit-prio-del");
-const removePriorityLbl = document.getElementById("remove-priority-lbl");
-
-
-// Evento para abrir el modal de gestión de prioridades
+// Esdeveniment per obrir el modal de gestió de prioritats
 managePrioritiesBtn.addEventListener("click", () => {
   populatePrioritiesList();
   fillRemovePriorityDropdown(); // Agrega esta línea
@@ -740,17 +742,17 @@ managePrioritiesBtn.addEventListener("click", () => {
   prioritiesModal.style.display = "flex";
 });
 
-// Evento para cerrar el modal de gestión de prioridades
+// Esdeveniment per tancar el modal de gestió de prioritats
 document.querySelector("#priorities-modal .close").addEventListener("click", () => {
   prioritiesModal.style.display = "none";
 });
 
-// Evento para cerrar el modal de gestión de prioridades
+// Esdeveniment per tancar el modal de gestió de prioritats (confirmar)
 document.querySelector("#priorities-modal-delete .close").addEventListener("click", () => {
   prioritiesModalDel.style.display = "none";
 });
 
-// Evento para agregar una nueva prioridad
+// Esdeveniment per afegir una nova prioritat
 addPriorityBtn.addEventListener("click", () => {
   const priorityName = priorityNameInput.value.trim();
   const priorityColor = priorityColorInput.value.trim();
@@ -768,7 +770,7 @@ addPriorityBtn.addEventListener("click", () => {
     if(validatePrior){
       addPriorityToLocalStorage({ name: priorityName, color: priorityColor });
       populatePrioritiesList();
-      fillRemovePriorityDropdown(); // Agrega esta línea
+      fillRemovePriorityDropdown();
       priorityNameInput.value = "";
       document.getElementById("camp-buit-prio").innerHTML = "S'ha afegit una nova prioritat";
       setTimeout(TimeGone, 2800);
@@ -781,7 +783,7 @@ addPriorityBtn.addEventListener("click", () => {
 });
 
 removePriorityBtn.addEventListener("click", () => {
-  if(!document.getElementById("remove-priority").value.match(/^ *$/)){
+  if(!removePrioritySel.value.match(/^ *$/)){
     //Validació
     let foundPriority = false;
     const priorities = getTasksFromLocalStorage();
@@ -817,21 +819,18 @@ removePriorityBtnConfirm.addEventListener("click", () => {
   Check4Priorities();
 });
 
-
-// Función para llenar el menú desplegable de eliminación con las prioridades actuales
+// Funció per omplir el menú desplegable d'eliminació amb les prioritats actuals
 function fillRemovePriorityDropdown() {
-  const removePriorityDropdown = document.getElementById("remove-priority");
-  removePriorityDropdown.innerHTML = "";
+  removePrioritySel.innerHTML = "";
   const priorities = getPrioritiesFromLocalStorage();
   priorities.forEach((priority) => {
     const option = document.createElement("option");
     option.value = priority.name;
     option.innerText = priority.name;
-    removePriorityDropdown.appendChild(option);
+    removePrioritySel.appendChild(option);
   });
 }
 
-//[PENDENT] aaaa
 function Check4Priorities(){
   if(removePrioritySel.value.match(/^ *$/)){
     removePrioritySel.style.display = "none";
@@ -844,7 +843,15 @@ function Check4Priorities(){
   }
 }
 
-//[PENDENT] borrar
+// Esdeveniment per aplicar el tema desat en carregar la pàgina
+window.addEventListener("load", () => {
+  const savedTheme = localStorage.getItem("selectedTheme");
+  if (savedTheme) {
+    document.querySelector('.board').style.backgroundImage = `url(images/${savedTheme}.jpg)`;
+    document.querySelector('.menu').style.backgroundImage = `url(images/${savedTheme}.jpg)`;    
+  }
+});
+
 // Función para poblar la lista de prioridades
 function populatePrioritiesList() {
   prioritiesList.innerHTML = "";
@@ -852,14 +859,3 @@ function populatePrioritiesList() {
   priorities.forEach((priority) => {
   });
 }
-
-
-// Evento para aplicar el tema guardado al cargar la página
-window.addEventListener("load", () => {
-  const savedTheme = localStorage.getItem("selectedTheme");
-  if (savedTheme) {
-    //document.body.style.backgroundImage = `url(images/${savedTheme}.jpg)`;
-    document.querySelector('.board').style.backgroundImage = `url(images/${savedTheme}.jpg)`;
-    document.querySelector('.menu').style.backgroundImage = `url(images/${savedTheme}.jpg)`;    
-  }
-});
